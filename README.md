@@ -5,7 +5,7 @@
 - Họ tên: Nguyễn Thành Lập  
 - Mã số sinh viên:  170124161
 - Lớp: DK24TTC2
-- Giảng viên hướng dẫn: Thầy Đoàn Phước Điềm 
+- Giảng viên hướng dẫn: Thầy Đoàn Phước Miền
 
 ## Mô tả đồ án
 Website chia sẻ khóa học trực tuyến cho phép người dùng đăng ký tài khoản, tìm kiếm và tham gia các khóa học theo chủ đề.  
