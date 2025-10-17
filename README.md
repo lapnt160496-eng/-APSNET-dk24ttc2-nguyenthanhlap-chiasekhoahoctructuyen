@@ -10,6 +10,7 @@
 ## Mô tả đồ án
 Website chia sẻ khóa học trực tuyến cho phép người dùng đăng ký tài khoản, tìm kiếm và tham gia các khóa học theo chủ đề.  
 Người quản trị có thể thêm, chỉnh sửa, xóa khóa học và quản lý người dùng.
+
 ## Tiến Trình thực hiện 
 - ngày 17 tháng 10 năm 2025 : chuẩn bị xây dựng form bài báo cáo, định dạng file Word đúng yêu cầu.
 - ngày 17 tháng 10 năm 2025 : Nghiên cứu, cài đặt Phần mềm APS.NET 8 và các công cụ hổ trợ lập trình khác .
