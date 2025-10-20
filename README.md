@@ -17,7 +17,7 @@ Người quản trị có thể thêm, chỉnh sửa, xóa khóa học và quả
 
 ## Tuần 1 
 🗓️ Thời gian thực hiện
-Tuần 1–2: Từ ngày 06/10/2025 đến 20/10/2025
+Tuần 1–2: Từ ngày 12/10/2025 đến 19/10/2025
 
 🎯 Mục tiêu
 Xác định đề tài và phạm vi đồ án
