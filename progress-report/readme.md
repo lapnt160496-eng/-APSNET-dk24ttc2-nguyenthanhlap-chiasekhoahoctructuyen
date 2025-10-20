@@ -16,16 +16,17 @@ Chuẩn bị dữ liệu và tài liệu ban đầu
 Cài đặt môi trường phát triển ASP.NET và Docker
 
 ## ✅ Công việc đã hoàn thành
-1. Tạo Repository
-Tên repo: ASPNET-dai12a-thanhnguyen-DEM0
+# 1. Tạo Repository
+Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 
 Đã public repo trên GitHub để giảng viên và bạn bè có thể truy cập
 
-2. Mời giảng viên
+# 2. Mời giảng viên
 Đã thêm tài khoản antoni80doan@gmail.com làm Collaborator để giảng viên theo dõi tiến độ
 
-3. Cấu trúc thư mục đã thiết lập
-4. Nội dung README.md
+# 3. Cấu trúc thư mục đã thiết lập
+
+# 4. Nội dung README.md
 Giới thiệu đề tài: Phân tích dữ liệu cảm biến thời gian thực với ASP.NET và Docker
 
 Thông tin liên hệ nhóm:
@@ -36,7 +37,7 @@ SĐT: 035 9664 596
 
 Lớp: Lớp: DK24TTC2
 
-5. Môi trường phát triển
+# 5. Môi trường phát triển
 Đã cài đặt:
 
 ASP.NET Core SDK 8.0
@@ -47,19 +48,16 @@ Visual Studio 2022
 
 Git + GitHub Desktop
 
-6. Tài liệu tham khảo
-2 bài báo khoa học về xử lý dữ liệu cảm biến
+# 6. Tài liệu tham khảo
+  2 bài báo khoa học về xử lý dữ liệu cảm biến
 
-1 tài liệu hướng dẫn triển khai ASP.NET với Docker
-
-Đã lưu vào thư mục doc/refs/ và đặt tên theo quy ước
+  1 tài liệu hướng dẫn triển khai ASP.NET với Docker
+    Đã lưu vào thư mục doc/refs/ và đặt tên theo quy ước
 
 ## 🚧 Khó khăn gặp phải
-Docker chưa tương thích hoàn toàn với một số cấu hình ASP.NET
-
-Chưa tìm được bộ dữ liệu cảm biến phù hợp
-
-Một số tài liệu tham khảo bằng tiếng Anh chuyên ngành, cần thời gian dịch
+   Docker chưa tương thích hoàn toàn với một số cấu hình ASP.NET
+   Chưa tìm được bộ dữ liệu cảm biến phù hợp
+  Một số tài liệu tham khảo bằng tiếng Anh chuyên ngành, cần thời gian dịch
 
 ## 📌 Kế hoạch tuần tới
 Tìm và xử lý bộ dữ liệu cảm biến (ưu tiên định dạng JSON hoặc CSV)
