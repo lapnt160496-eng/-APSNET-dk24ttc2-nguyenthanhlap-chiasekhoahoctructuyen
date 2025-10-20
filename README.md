@@ -39,9 +39,10 @@ Chuẩn bị môi trường phát triển ban đầu
   - html/:file web
   - abs/: (.PPT, AVI,...)
 -**soft/**: phần mềm liên quan
+
 -**docker/**: cấu hình triển khai trên docker
 
-##Thông tin liên hệ
+## Thông tin liên hệ
 - Tác giả: Nguyễn Thành Lập
 - Email: Lapnt160496@tvu-onschool.edu.vn
 - Lớp: DK24TTC2
