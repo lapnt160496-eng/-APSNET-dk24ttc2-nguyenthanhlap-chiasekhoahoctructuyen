@@ -1,4 +1,5 @@
-<img width="276" height="19" alt="image" src="https://github.com/user-attachments/assets/7836e14a-73a7-4a22-87da-891a13719c48" />## 📘 Báo cáo Tiến độ Tuần 1 – Đồ án ASP.NET
+
+## 📘 Báo cáo Tiến độ Tuần 1 – Đồ án ASP.NET
 #  🗓️ Thời gian thực hiện
 Từ ngày 12/10/2025 đến 19/10/2025
 
