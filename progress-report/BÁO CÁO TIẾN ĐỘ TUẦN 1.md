@@ -78,4 +78,4 @@ Viết sơ đồ kiến trúc hệ thống và mô tả chi tiết
 
 Bắt đầu xây dựng module thu thập và xử lý dữ liệu trong thư mục scr/
 
-Cập nhật báo cáo tiến độ tuần 2 trong progress-report/week2.md
+Cập nhật báo cáo tiến độ tuần 2 trong progress-report/báo cáo tiến độ tuần 2.md
