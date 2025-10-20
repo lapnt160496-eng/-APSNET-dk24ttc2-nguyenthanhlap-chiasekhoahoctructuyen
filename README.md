@@ -4,6 +4,8 @@
 ## Thông tin sinh viên
 - Họ tên: Nguyễn Thành Lập  
 - Mã số sinh viên:  170124161
+- Email : Lapnt160496@tvu-onschool.edu.vn
+- Phone : 035 9664 596 
 - Lớp: DK24TTC2
 - Giảng viên hướng dẫn: Thầy Đoàn Phước Miền
 
