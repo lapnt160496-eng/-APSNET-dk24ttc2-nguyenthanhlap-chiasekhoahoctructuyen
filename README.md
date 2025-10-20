@@ -15,8 +15,32 @@ Người quản trị có thể thêm, chỉnh sửa, xóa khóa học và quả
 
 ## Tiến Trình thực hiện 
 # Tuần 1 
-- Chuẩn bị xây dựng form bài báo cáo, định dạng file Word đúng yêu cầu.
-- Nghiên cứu, cài đặt Phần mềm APS.NET và các công cụ hổ trợ lập trình khác .
-- Phát họa sơ bộ khung sườn của website chia sẻ khóa học trực tuyến
+🗓️ Thời gian thực hiện
+Tuần 1–2: Từ ngày 06/10/2025 đến 20/10/2025
 
+🎯 Mục tiêu
+Xác định đề tài và phạm vi đồ án
+
+Thu thập tài liệu tham khảo ban đầu
+
+Thiết lập cấu trúc thư mục dự án trên GitHub
+
+Chuẩn bị môi trường phát triển ban đầu
+
+## Cấu trúc thư mục
+**setup/**: chứa các tệp cài đặt, hướng dẫn chạy chương trình.
+
+**src/**: chứa mã nguồn và dữ liệu thử nghiệm.
+
+**progress-report/**:chứa các báo cáo tiến độ đồ án.
+  - doc/: file .doc
+  - pdf/: file. PDF
+  - html/:file web
+  - abs/: (.PPT, AVI,...)
+-**soft/**: phần mềm liên quan
+-**docker/**: cấu hình triển khai trên docker
+##Thông tin liên hệ
+- Tác giả: Nguyễn Thành Lập
+- Email: Lapnt160496@tvu-onschool.edu.vn
+- Lớp: DK24TTC2
 
