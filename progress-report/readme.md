@@ -28,6 +28,7 @@ Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 # 3. Cấu trúc thư mục đã thiết lập
 
 -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
+
 ├── scr/                 # Mã nguồn và dữ liệu thử nghiệm
 ├── doc/                 # Tài liệu báo cáo và hướng dẫn
 │   ├── report/          # Tài liệu dạng .DOC
