@@ -28,6 +28,17 @@ Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 # 3. Cấu trúc thư mục đã thiết lập
 -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 
+setup/: chứa các tệp cài đặt, hướng dẫn chạy chương trình.
+
+src/: chứa mã nguồn và dữ liệu thử nghiệm.
+
+progress-report/:chứa các báo cáo tiến độ đồ án.
+
+doc/: file .doc
+pdf/: file. PDF
+html/:file web
+abs/: (.PPT, AVI,...) -soft/: phần mềm liên quan
+-docker/: cấu hình triển khai trên docker
 # 4. Nội dung README.md
 Giới thiệu đề tài: Phân tích dữ liệu cảm biến thời gian thực với ASP.NET và Docker
 
