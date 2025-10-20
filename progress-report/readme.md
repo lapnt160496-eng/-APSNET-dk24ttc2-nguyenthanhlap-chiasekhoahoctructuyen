@@ -27,6 +27,20 @@ Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 
 # 3. Cấu trúc thư mục đã thiết lập
 
+ASPNET-dai12a-thanhnguyen-DEM0/
+├── scr/                 # Mã nguồn và dữ liệu thử nghiệm
+├── doc/                 # Tài liệu báo cáo và hướng dẫn
+│   ├── report/          # Tài liệu dạng .DOC
+│   ├── pdf/             # Tài liệu dạng .PDF
+│   ├── html/            # Tài liệu dạng .HTML
+│   └── refs/            # Slide (.PPT), video (.AVI), tài liệu tham khảo
+├── soft/                # Phần mềm hoặc tập tin hỗ trợ triển khai
+├── docker/              # Cấu hình triển khai Docker container
+├── progress-report/     # Báo cáo tiến độ từng tuần
+│   └── week1.md         # Báo cáo tuần 1
+└── README.md            # Giới thiệu dự án, thông tin liên hệ nhóm
+
+
 # 4. Nội dung README.md
 Giới thiệu đề tài: Phân tích dữ liệu cảm biến thời gian thực với ASP.NET và Docker
 
