@@ -27,6 +27,8 @@ Thu thập tài liệu tham khảo ban đầu
 Thiết lập cấu trúc thư mục dự án trên GitHub
 
 Chuẩn bị môi trường phát triển ban đầu
+## Mời giảng viên
+Đã thêm tài khoản antoni80doan@gmail.com làm Collaborator để giảng viên theo dõi tiến độ
 
 ## Cấu trúc thư mục
 **setup/**: chứa các tệp cài đặt, hướng dẫn chạy chương trình.
