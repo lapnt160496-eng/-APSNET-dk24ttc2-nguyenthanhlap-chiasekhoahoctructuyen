@@ -29,18 +29,8 @@ Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 
 -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 
-├── scr/                 # Mã nguồn và dữ liệu thử nghiệm
-├── doc/                 # Tài liệu báo cáo và hướng dẫn
-│   ├── report/          # Tài liệu dạng .DOC
-│   ├── pdf/             # Tài liệu dạng .PDF
-│   ├── html/            # Tài liệu dạng .HTML
-│   └── refs/            # Slide (.PPT), video (.AVI), tài liệu tham khảo
-├── soft/                # Phần mềm hoặc tập tin hỗ trợ triển khai
-├── docker/              # Cấu hình triển khai Docker container
-├── progress-report/     # Báo cáo tiến độ từng tuần
-│   └── week1.md         # Báo cáo tuần 1
-└── README.md            # Giới thiệu dự án, thông tin liên hệ nhóm
-
+o setup: chứa các tập tin dùng để install chương trình thi hành
+        o scr: chứa các tập tin nguồn, các tập tin dữ liệu thử nghiệm 
 
 # 4. Nội dung README.md
 Giới thiệu đề tài: Phân tích dữ liệu cảm biến thời gian thực với ASP.NET và Docker
