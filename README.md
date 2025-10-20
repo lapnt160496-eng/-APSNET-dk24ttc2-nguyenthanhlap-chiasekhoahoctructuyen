@@ -14,7 +14,8 @@ Website chia sẻ khóa học trực tuyến cho phép người dùng đăng ký
 Người quản trị có thể thêm, chỉnh sửa, xóa khóa học và quản lý người dùng.
 
 ## Tiến Trình thực hiện 
-# Tuần 1 
+
+## Tuần 1 
 🗓️ Thời gian thực hiện
 Tuần 1–2: Từ ngày 06/10/2025 đến 20/10/2025
 
@@ -39,6 +40,7 @@ Chuẩn bị môi trường phát triển ban đầu
   - abs/: (.PPT, AVI,...)
 -**soft/**: phần mềm liên quan
 -**docker/**: cấu hình triển khai trên docker
+
 ##Thông tin liên hệ
 - Tác giả: Nguyễn Thành Lập
 - Email: Lapnt160496@tvu-onschool.edu.vn
