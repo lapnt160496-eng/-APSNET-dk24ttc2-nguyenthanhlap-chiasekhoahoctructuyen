@@ -26,12 +26,7 @@ Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 Đã thêm tài khoản antoni80doan@gmail.com làm Collaborator để giảng viên theo dõi tiến độ
 
 # 3. Cấu trúc thư mục đã thiết lập
-
 -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
-Tạo repository GitHub và cấu trúc thư mục dự án.
-Cài đặt môi trường phát triển (Visual Studio, .NET SDK, Docker).
-Khởi tạo project ASP.NET Core MVC
-Tìm hiểu về cách triển khai mô hình MVC trong ASP.NET.
 
 # 4. Nội dung README.md
 Giới thiệu đề tài: Phân tích dữ liệu cảm biến thời gian thực với ASP.NET và Docker
@@ -52,8 +47,7 @@ ASP.NET Core SDK 8.0
 Docker Desktop
 
 Visual Studio 2022
-
-Git + GitHub Desktop
+GitHub Desktop
 
 # 6. Tài liệu tham khảo
   2 bài báo khoa học về xử lý dữ liệu cảm biến
