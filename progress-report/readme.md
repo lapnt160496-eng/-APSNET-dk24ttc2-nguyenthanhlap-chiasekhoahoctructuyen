@@ -28,9 +28,10 @@ Tên repo: -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
 # 3. Cấu trúc thư mục đã thiết lập
 
 -APSNET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen
-
-o setup: chứa các tập tin dùng để install chương trình thi hành
-        o scr: chứa các tập tin nguồn, các tập tin dữ liệu thử nghiệm 
+Tạo repository GitHub và cấu trúc thư mục dự án.
+Cài đặt môi trường phát triển (Visual Studio, .NET SDK, Docker).
+Khởi tạo project ASP.NET Core MVC
+Tìm hiểu về cách triển khai mô hình MVC trong ASP.NET.
 
 # 4. Nội dung README.md
 Giới thiệu đề tài: Phân tích dữ liệu cảm biến thời gian thực với ASP.NET và Docker
