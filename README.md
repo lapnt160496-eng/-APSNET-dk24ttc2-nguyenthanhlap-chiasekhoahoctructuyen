@@ -7,7 +7,7 @@
 - Email : Lapnt160496@tvu-onschool.edu.vn
 - Phone : 035 9664 596 
 - Lớp: DK24TTC2
-- Giảng viên hướng dẫn: Thầy Đoàn Phước Miền
+- Giảng viên hướng dẫn: ThS Đoàn Phước Miền
 
 ## Mô tả đồ án
 Website chia sẻ khóa học trực tuyến cho phép người dùng đăng ký tài khoản, tìm kiếm và tham gia các khóa học theo chủ đề.  
