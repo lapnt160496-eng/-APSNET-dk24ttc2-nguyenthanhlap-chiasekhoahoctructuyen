@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Data;
-using nguyenvanlap.Models;
+using nguyenthanhlap.Data;
+using nguyenthanhlap.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 

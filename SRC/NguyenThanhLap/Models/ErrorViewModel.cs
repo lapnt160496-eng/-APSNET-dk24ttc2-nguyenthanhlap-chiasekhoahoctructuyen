@@ -1,4 +1,4 @@
-namespace nguyenvanlap.Models;
+namespace nguyenthanhlap.Models;
 
 public class ErrorViewModel
 {

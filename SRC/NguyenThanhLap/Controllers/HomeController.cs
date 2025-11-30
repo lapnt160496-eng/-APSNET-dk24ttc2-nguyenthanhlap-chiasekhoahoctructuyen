@@ -1,10 +1,10 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Data;
-using nguyenvanlap.Models;
+using nguyenthanhlap.Data;
+using nguyenthanhlap.Models;
 
-namespace nguyenvanlap.Controllers;
+namespace nguyenthanhlap.Controllers;
 
 public class HomeController : Controller
 {

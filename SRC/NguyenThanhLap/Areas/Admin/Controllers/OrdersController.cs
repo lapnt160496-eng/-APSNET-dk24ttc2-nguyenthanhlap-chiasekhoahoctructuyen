@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Data;
+using nguyenthanhlap.Data;
 
-namespace nguyenvanlap.Controllers.Admin
+namespace nguyenthanhlap.Controllers.Admin
 {
     [Authorize(Roles = "Admin")]
     [Area("Admin")]

@@ -79,7 +79,7 @@ Nền tảng học trực tuyến hoàn chỉnh được xây dựng bằng ASP.
 1. **Clone repository**
 ```bash
 git clone <repository-url>
-cd nguyenvanlapNew
+cd nguyenthanhlapNew
 ```
 
 2. **Cài đặt dependencies**
@@ -93,7 +93,7 @@ Mở `appsettings.json` và cập nhật connection string nếu cần:
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=nguyenvanlapDb;Trusted_Connection=True;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=nguyenthanhlapDb;Trusted_Connection=True;MultipleActiveResultSets=true"
   }
 }
 ```
@@ -121,7 +121,7 @@ Mở trình duyệt và truy cập: `https://localhost:5001`
 ## 📁 Cấu Trúc Dự Án
 
 ```
-nguyenvanlapNew/
+nguyenthanhlapNew/
 ├── Areas/
 │   └── Admin/
 │       └── Controllers/      # Admin controllers

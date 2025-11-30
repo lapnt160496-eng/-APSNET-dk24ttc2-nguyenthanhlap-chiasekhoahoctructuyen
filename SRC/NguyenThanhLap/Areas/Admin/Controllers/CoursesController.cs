@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Data;
-using nguyenvanlap.Models;
+using nguyenthanhlap.Data;
+using nguyenthanhlap.Models;
 
-namespace nguyenvanlap.Controllers.Admin
+namespace nguyenthanhlap.Controllers.Admin
 {
     [Authorize(Roles = "Admin")]
     [Area("Admin")]

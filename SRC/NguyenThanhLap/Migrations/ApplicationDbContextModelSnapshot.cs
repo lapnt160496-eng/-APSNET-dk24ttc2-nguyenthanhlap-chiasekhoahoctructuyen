@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using nguyenvanlap.Data;
+using nguyenthanhlap.Data;
 
 #nullable disable
 
-namespace nguyenvanlap.Migrations
+namespace nguyenthanhlap.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -155,7 +155,7 @@ namespace nguyenvanlap.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.ApplicationUser", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -232,7 +232,7 @@ namespace nguyenvanlap.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Category", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -294,7 +294,7 @@ namespace nguyenvanlap.Migrations
                         });
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Course", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -342,7 +342,7 @@ namespace nguyenvanlap.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.CourseProgress", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.CourseProgress", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -378,7 +378,7 @@ namespace nguyenvanlap.Migrations
                     b.ToTable("CourseProgresses");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Lesson", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Lesson", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -419,7 +419,7 @@ namespace nguyenvanlap.Migrations
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Order", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -461,7 +461,7 @@ namespace nguyenvanlap.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Review", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -506,7 +506,7 @@ namespace nguyenvanlap.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", null)
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -515,7 +515,7 @@ namespace nguyenvanlap.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", null)
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -530,7 +530,7 @@ namespace nguyenvanlap.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", null)
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -539,16 +539,16 @@ namespace nguyenvanlap.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", null)
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Course", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Course", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.Category", "Category")
+                    b.HasOne("nguyenthanhlap.Models.Category", "Category")
                         .WithMany("Courses")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -557,15 +557,15 @@ namespace nguyenvanlap.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.CourseProgress", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.CourseProgress", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.Course", "Course")
+                    b.HasOne("nguyenthanhlap.Models.Course", "Course")
                         .WithMany("CourseProgresses")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", "User")
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", "User")
                         .WithMany("CourseProgresses")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -576,9 +576,9 @@ namespace nguyenvanlap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Lesson", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Lesson", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.Course", "Course")
+                    b.HasOne("nguyenthanhlap.Models.Course", "Course")
                         .WithMany("Lessons")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -587,15 +587,15 @@ namespace nguyenvanlap.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Order", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Order", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.Course", "Course")
+                    b.HasOne("nguyenthanhlap.Models.Course", "Course")
                         .WithMany("Orders")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", "User")
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -606,15 +606,15 @@ namespace nguyenvanlap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Review", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Review", b =>
                 {
-                    b.HasOne("nguyenvanlap.Models.Course", "Course")
+                    b.HasOne("nguyenthanhlap.Models.Course", "Course")
                         .WithMany("Reviews")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("nguyenvanlap.Models.ApplicationUser", "User")
+                    b.HasOne("nguyenthanhlap.Models.ApplicationUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -625,7 +625,7 @@ namespace nguyenvanlap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.ApplicationUser", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.ApplicationUser", b =>
                 {
                     b.Navigation("CourseProgresses");
 
@@ -634,12 +634,12 @@ namespace nguyenvanlap.Migrations
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Category", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Category", b =>
                 {
                     b.Navigation("Courses");
                 });
 
-            modelBuilder.Entity("nguyenvanlap.Models.Course", b =>
+            modelBuilder.Entity("nguyenthanhlap.Models.Course", b =>
                 {
                     b.Navigation("CourseProgresses");
 

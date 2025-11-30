@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Models;
+using nguyenthanhlap.Models;
 
-namespace nguyenvanlap.Controllers.Admin
+namespace nguyenthanhlap.Controllers.Admin
 {
     [Authorize(Roles = "Admin")]
     [Area("Admin")]
@@ -12,9 +12,9 @@ namespace nguyenvanlap.Controllers.Admin
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly nguyenvanlap.Data.ApplicationDbContext _context;
+        private readonly nguyenthanhlap.Data.ApplicationDbContext _context;
 
-        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, nguyenvanlap.Data.ApplicationDbContext context)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, nguyenthanhlap.Data.ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;

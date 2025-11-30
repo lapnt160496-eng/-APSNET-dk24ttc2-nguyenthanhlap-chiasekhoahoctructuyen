@@ -4888,11 +4888,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Kai\\Downloads\\WebsiteKhoaHocNew\\nguyenvanlap.csproj",
-      "projectName": "nguyenvanlap",
-      "projectPath": "C:\\Users\\Kai\\Downloads\\WebsiteKhoaHocNew\\nguyenvanlap.csproj",
+      "projectUniqueName": "C:\\Users\\Kai\\Documents\\GitHub\\-ASP.NET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen\\SRC\\NguyenThanhLap\\nguyenthanhlap.csproj",
+      "projectName": "nguyenthanhlap",
+      "projectPath": "C:\\Users\\Kai\\Documents\\GitHub\\-ASP.NET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen\\SRC\\NguyenThanhLap\\nguyenthanhlap.csproj",
       "packagesPath": "C:\\Users\\Kai\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Kai\\Downloads\\WebsiteKhoaHocNew\\obj\\",
+      "outputPath": "C:\\Users\\Kai\\Documents\\GitHub\\-ASP.NET-dk24ttc2-nguyenthanhlap-chiasekhoahoctructuyen\\SRC\\NguyenThanhLap\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

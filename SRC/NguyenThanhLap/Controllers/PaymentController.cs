@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Data;
-using nguyenvanlap.Models;
+using nguyenthanhlap.Data;
+using nguyenthanhlap.Models;
 
-namespace nguyenvanlap.Controllers
+namespace nguyenthanhlap.Controllers
 {
     [Authorize]
     public class PaymentController : Controller

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using nguyenvanlap.Models;
-using nguyenvanlap.ViewModels;
+using nguyenthanhlap.Models;
+using nguyenthanhlap.ViewModels;
 
-namespace nguyenvanlap.Controllers
+namespace nguyenthanhlap.Controllers
 {
     public class AccountController : Controller
     {

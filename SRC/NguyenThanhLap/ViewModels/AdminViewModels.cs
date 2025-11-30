@@ -1,6 +1,6 @@
-using nguyenvanlap.Models;
+using nguyenthanhlap.Models;
 
-namespace nguyenvanlap.ViewModels
+namespace nguyenthanhlap.ViewModels
 {
     public class DashboardViewModel
     {

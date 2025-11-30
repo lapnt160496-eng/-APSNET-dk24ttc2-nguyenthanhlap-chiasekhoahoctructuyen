@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using nguyenvanlap.Models;
+using nguyenthanhlap.Models;
 
-namespace nguyenvanlap.Data
+namespace nguyenthanhlap.Data
 {
     public static class SeedData
     {
