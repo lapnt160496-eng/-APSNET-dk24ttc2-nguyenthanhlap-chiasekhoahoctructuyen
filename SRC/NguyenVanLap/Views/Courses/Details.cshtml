@@ -1,0 +1,202 @@
+@model CourseDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Course.Title;
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Course Header -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <img src="@(Model.Course.CoverImage ?? "/images/default-course.jpg")" alt="@Model.Course.Title" 
+                     style="width: 100%; height: 400px; object-fit: cover;" onerror="this.src='/images/default-course.jpg'">
+                <div class="card-body" style="padding: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <span class="badge badge-primary">@Model.Course.Category.Name</span>
+                        <div class="rating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="fas fa-star" style="color: @(i <= Model.AverageRating ? "var(--accent-color)" : "#334155");"></i>
+                            }
+                            <span style="margin-left: 0.5rem; color: var(--text-muted);">
+                                @Model.AverageRating.ToString("F1") (@Model.TotalReviews đánh giá)
+                            </span>
+                        </div>
+                    </div>
+                    <h1 style="margin-bottom: 1rem;">@Model.Course.Title</h1>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">@Model.Course.Description</p>
+                    
+                    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                        <div>
+                            <i class="fas fa-user" style="color: var(--primary-color);"></i>
+                            <strong>Giảng viên:</strong> @Model.Course.InstructorName
+                        </div>
+                        <div>
+                            <i class="fas fa-book-open" style="color: var(--primary-color);"></i>
+                            <strong>Số bài học:</strong> @Model.Lessons.Count bài
+                        </div>
+                        <div>
+                            <i class="fas fa-clock" style="color: var(--primary-color);"></i>
+                            <strong>Thời lượng:</strong> @Model.Lessons.Sum(l => l.DurationMinutes) phút
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructor Info -->
+            @if (!string.IsNullOrEmpty(Model.Course.InstructorBio))
+            {
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div class="card-body">
+                        <h3><i class="fas fa-chalkboard-teacher"></i> Giới thiệu giảng viên</h3>
+                        <p style="margin-bottom: 0;">@Model.Course.InstructorBio</p>
+                    </div>
+                </div>
+            }
+
+            <!-- Lessons List -->
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-body">
+                    <h3><i class="fas fa-list"></i> Nội dung khóa học</h3>
+                    <div style="margin-top: 1.5rem;">
+                        @foreach (var lesson in Model.Lessons)
+                        {
+                            <div style="padding: 1rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; color: var(--text-primary);">
+                                <div>
+                                    <i class="fas fa-play-circle" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                                    <strong style="color: var(--text-primary);">Bài @lesson.OrderIndex:</strong> <span style="color: var(--text-secondary);">@lesson.Title</span>
+                                </div>
+                                <span style="color: var(--text-muted);">@lesson.DurationMinutes phút</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews -->
+            <div class="card">
+                <div class="card-body">
+                    <h3><i class="fas fa-comments"></i> Đánh giá từ học viên</h3>
+                    
+                    @if (Model.IsEnrolled && User.Identity!.IsAuthenticated)
+                    {
+                        <div style="margin: 1.5rem 0; padding: 1.5rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
+                            <h5>Đánh giá khóa học này</h5>
+                            <form asp-action="AddReview" method="post">
+                                <input type="hidden" name="courseId" value="@Model.Course.Id" />
+                                <div class="mb-3">
+                                    <label class="form-label">Số sao</label>
+                                    <select name="rating" class="form-select" required>
+                                        <option value="5">5 sao - Xuất sắc</option>
+                                        <option value="4">4 sao - Rất tốt</option>
+                                        <option value="3">3 sao - Tốt</option>
+                                        <option value="2">2 sao - Trung bình</option>
+                                        <option value="1">1 sao - Kém</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Bình luận</label>
+                                    <textarea name="comment" class="form-control" rows="3" placeholder="Chia sẻ trải nghiệm của bạn..."></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Gửi đánh giá
+                                </button>
+                            </form>
+                        </div>
+                    }
+
+                    <div style="margin-top: 1.5rem;">
+                        @if (Model.Reviews.Any())
+                        {
+                            @foreach (var review in Model.Reviews)
+                            {
+                                <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <div>
+                                            <strong>@review.User.FullName</strong>
+                                            <div class="rating" style="display: inline-block; margin-left: 1rem;">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <i class="fas fa-star" style="color: @(i <= review.Rating ? "var(--accent-color)" : "#334155"); font-size: 0.875rem;"></i>
+                                                }
+                                            </div>
+                                        </div>
+                                        <span style="color: var(--text-muted); font-size: 0.875rem;">@review.CreatedAt.ToString("dd/MM/yyyy")</span>
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(review.Comment))
+                                    {
+                                        <p style="margin: 0; color: var(--text-secondary);">@review.Comment</p>
+                                    }
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="text-align: center; color: var(--text-muted); padding: 2rem;">Chưa có đánh giá nào.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card" style="position: sticky; top: 2rem;">
+                <div class="card-body" style="padding: 2rem;">
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <h2 style="color: var(--primary-light); margin-bottom: 0.5rem;">
+                            @Model.Course.Price.ToString("N0") đ
+                        </h2>
+                        <p style="color: var(--text-muted); margin: 0;">Giá khóa học</p>
+                    </div>
+
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        @if (Model.IsEnrolled)
+                        {
+                            <a asp-action="Learn" asp-route-id="@Model.Course.Id" class="btn btn-success" style="width: 100%; margin-bottom: 1rem;">
+                                <i class="fas fa-play"></i> Tiếp tục học
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Payment" asp-action="Checkout" asp-route-id="@Model.Course.Id" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                                <i class="fas fa-shopping-cart"></i> Mua khóa học
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Url.Action("Details", "Courses", new { id = Model.Course.Id })" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">
+                            <i class="fas fa-sign-in-alt"></i> Đăng nhập để mua
+                        </a>
+                    }
+
+                    <hr style="border-color: var(--border-color); margin: 2rem 0;">
+
+                    <h5 style="margin-bottom: 1rem;">Khóa học bao gồm:</h5>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 0.5rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                            @Model.Lessons.Count bài học
+                        </li>
+                        <li style="padding: 0.5rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                            Truy cập trọn đời
+                        </li>
+                        <li style="padding: 0.5rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                            Học mọi lúc, mọi nơi
+                        </li>
+                        <li style="padding: 0.5rem 0; color: var(--text-secondary);">
+                            <i class="fas fa-check" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                            Hỗ trợ từ giảng viên
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

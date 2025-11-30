@@ -1,0 +1,191 @@
+@model nguyenvanlap.ViewModels.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row g-4 mb-4">
+    <!-- Stats Cards -->
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-lg bg-primary bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-users text-primary fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted text-uppercase fs-12 mb-1">Tổng Học Viên</h6>
+                        <h4 class="mb-0 fw-bold">@Model.TotalUsers.ToString("N0")</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-lg bg-success bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-book text-success fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted text-uppercase fs-12 mb-1">Khóa Học</h6>
+                        <h4 class="mb-0 fw-bold">@Model.TotalCourses.ToString("N0")</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-lg bg-warning bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-shopping-bag text-warning fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted text-uppercase fs-12 mb-1">Đơn Hàng</h6>
+                        <h4 class="mb-0 fw-bold">@Model.TotalOrders.ToString("N0")</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-shrink-0 me-3">
+                        <div class="avatar-lg bg-info bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                            <i class="fas fa-dollar-sign text-info fs-4"></i>
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="text-muted text-uppercase fs-12 mb-1">Doanh Thu</h6>
+                        <h4 class="mb-0 fw-bold">@Model.TotalRevenue.ToString("N0") đ</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Recent Orders -->
+    <div class="col-xl-8">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 fw-bold">Đơn Hàng Gần Đây</h5>
+                <a asp-controller="Orders" asp-action="Index" class="btn btn-sm btn-light text-primary fw-medium">Xem tất cả</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-muted">
+                            <tr>
+                                <th class="ps-4">Mã đơn</th>
+                                <th>Học viên</th>
+                                <th>Khóa học</th>
+                                <th>Số tiền</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.RecentOrders != null && Model.RecentOrders.Any())
+                            {
+                                foreach (var order in Model.RecentOrders)
+                                {
+                                    <tr>
+                                        <td class="ps-4 fw-medium">#@order.Id</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-xs bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                                    <span class="text-primary fw-bold" style="font-size: 12px;">@order.User?.FullName?.Substring(0, 1).ToUpper()</span>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 fs-14">@order.User?.FullName</h6>
+                                                    <small class="text-muted">@order.CreatedAt.ToString("dd/MM/yyyy")</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>@order.Course?.Title</td>
+                                        <td class="fw-bold text-primary">@order.Amount.ToString("N0") đ</td>
+                                        <td>
+                                            <span class="badge bg-success bg-opacity-10 text-success">Hoàn thành</span>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-muted">Chưa có đơn hàng nào</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Courses -->
+    <div class="col-xl-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-transparent border-bottom py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 fw-bold">Khóa Học Mới</h5>
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-sm btn-light text-primary fw-medium">Xem tất cả</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    @if (Model.RecentCourses != null && Model.RecentCourses.Any())
+                    {
+                        foreach (var course in Model.RecentCourses)
+                        {
+                            <div class="list-group-item border-0 px-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 me-3">
+                                        @if (!string.IsNullOrEmpty(course.CoverImage))
+                                        {
+                                            <img src="@course.CoverImage" class="rounded-3 object-fit-cover" width="60" height="40" alt="@course.Title">
+                                        }
+                                        else
+                                        {
+                                            <div class="rounded-3 bg-light d-flex align-items-center justify-content-center" style="width: 60px; height: 40px;">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="flex-grow-1 min-w-0">
+                                        <h6 class="mb-1 text-truncate">@course.Title</h6>
+                                        <div class="d-flex align-items-center text-muted fs-12">
+                                            <span class="me-2"><i class="fas fa-folder me-1"></i>@course.Category?.Name</span>
+                                            <span><i class="fas fa-clock me-1"></i>@course.CreatedAt.ToString("dd/MM")</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-shrink-0 ms-2">
+                                        <span class="badge bg-light text-dark">@course.Price.ToString("N0") đ</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center py-4 text-muted">Chưa có khóa học nào</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

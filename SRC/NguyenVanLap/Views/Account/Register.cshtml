@@ -1,0 +1,58 @@
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Đăng ký";
+}
+
+<div class="container" style="max-width: 500px; margin: 4rem auto;">
+    <div class="card glass-effect">
+        <div class="card-body" style="padding: 3rem;">
+            <h2 style="text-align: center; margin-bottom: 2rem;">
+                <i class="fas fa-user-plus"></i> Đăng Ký Tài Khoản
+            </h2>
+
+            <form asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                <div class="mb-3">
+                    <label asp-for="FullName" class="form-label">Họ và tên</label>
+                    <input asp-for="FullName" class="form-control" placeholder="Nguyễn Văn A" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="email@example.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Mật khẩu</label>
+                    <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ConfirmPassword" class="form-label">Xác nhận mật khẩu</label>
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="••••••••" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Đăng ký
+                </button>
+            </form>
+
+            <hr style="margin: 2rem 0; border-color: var(--border-color);">
+
+            <p style="text-align: center; margin: 0;">
+                Đã có tài khoản? 
+                <a asp-action="Login" style="color: var(--primary-light); font-weight: 600;">Đăng nhập ngay</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

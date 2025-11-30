@@ -1,0 +1,189 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using nguyenvanlap.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Học Trực Tuyến</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-graduation-cap"></i> Học Trực Tuyến
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")" 
+                               asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fas fa-home"></i> Trang chủ
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "active" : "")" 
+                               asp-area="" asp-controller="Courses" asp-action="Index">
+                                <i class="fas fa-book"></i> Khóa học
+                            </a>
+                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "MyCourses" ? "active" : "")" 
+                                   asp-area="" asp-controller="Courses" asp-action="MyCourses">
+                                    <i class="fas fa-book-reader"></i> Khóa học của tôi
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link btn btn-outline-primary btn-sm ms-2" asp-area="Admin" asp-controller="Dashboard" asp-action="Index" style="padding: 0.25rem 0.75rem !important;">
+                                        <i class="fas fa-tachometer-alt"></i> Quản trị
+                                    </a>
+                                </li>
+                            }
+                            <li class="nav-item dropdown ms-2">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                    <img src="https://ui-avatars.com/api/?name=@User.Identity!.Name&background=random" alt="Avatar" class="rounded-circle" width="30" height="30" style="margin-right: 5px;">
+                                    @User.Identity!.Name
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end glass-effect" style="border: 1px solid var(--border-color);">
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Profile">
+                                            <i class="fas fa-user me-2"></i> Hồ sơ
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Courses" asp-action="TransactionHistory">
+                                            <i class="fas fa-history me-2"></i> Lịch sử giao dịch
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" style="border-color: var(--border-color);"></li>
+                                    <li>
+                                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                                </a>
+                            </li>
+                            <li class="nav-item ms-2">
+                                <a class="btn btn-primary" asp-area="" asp-controller="Account" asp-action="Register">
+                                    <i class="fas fa-user-plus"></i> Đăng ký
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle"></i> @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle"></i> @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    }
+
+    @if (TempData["Info"] != null)
+    {
+        <div class="container mt-3">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <i class="fas fa-info-circle"></i> @TempData["Info"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        </div>
+    }
+
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h5><i class="fas fa-graduation-cap"></i> Học Trực Tuyến</h5>
+                    <p style="color: var(--text-muted);">Nền tảng học trực tuyến hàng đầu Việt Nam. Học mọi lúc, mọi nơi với các khóa học chất lượng cao.</p>
+                </div>
+                <div>
+                    <h5>Liên kết nhanh</h5>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li><a asp-controller="Courses" asp-action="Index">Khóa học</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy">Chính sách</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5>Hỗ trợ</h5>
+                    <ul>
+                        <li><a href="#">Trung tâm trợ giúp</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Liên hệ</a></li>
+                        <li><a href="#">Điều khoản sử dụng</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5>Kết nối với chúng tôi</h5>
+                    <div style="display: flex; gap: 1rem; font-size: 1.5rem;">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr style="border-color: var(--border-color); margin: 2rem 0;">
+            <div style="text-align: center; color: var(--text-muted);">
+                <p>&copy; 2025 Học Trực Tuyến. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

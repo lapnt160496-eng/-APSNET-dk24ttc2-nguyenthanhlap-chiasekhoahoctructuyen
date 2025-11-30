@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Thanh toán thành công";
+}
+
+<div class="container" style="max-width: 600px; margin: 4rem auto; text-align: center;">
+    <div class="card glass-effect">
+        <div class="card-body" style="padding: 3rem;">
+            <div style="font-size: 5rem; color: var(--success-color); margin-bottom: 1rem;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            
+            <h1 style="margin-bottom: 1rem;">Thanh Toán Thành Công!</h1>
+            <p style="color: var(--text-secondary); font-size: 1.125rem; margin-bottom: 2rem;">
+                Cảm ơn bạn đã mua khóa học. Bạn có thể bắt đầu học ngay bây giờ!
+            </p>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a asp-controller="Courses" asp-action="MyCourses" class="btn btn-primary">
+                    <i class="fas fa-graduation-cap"></i> Khóa học của tôi
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary">
+                    <i class="fas fa-home"></i> Về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

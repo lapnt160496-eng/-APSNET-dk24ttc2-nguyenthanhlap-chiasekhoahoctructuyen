@@ -1,0 +1,196 @@
+@model Course
+
+@{
+    ViewData["Title"] = "Thêm khóa học";
+}
+
+<div class="container" style="max-width: 1000px; margin: 3rem auto;">
+    <div style="margin-bottom: 2.5rem;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+            <i class="fas fa-plus-circle" style="color: var(--primary-light);"></i> Thêm Khóa Học Mới
+        </h1>
+        <p style="color: var(--text-muted); margin: 0;">
+            Điền thông tin để tạo khóa học mới
+        </p>
+    </div>
+
+    <div class="card" style="border: 2px solid var(--border-color);">
+        <div class="card-body" style="padding: 2.5rem;">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                
+                <!-- Validation Summary -->
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger" style="margin-bottom: 2rem;">
+                        <h5 style="margin-bottom: 1rem;">
+                            <i class="fas fa-exclamation-triangle"></i> Có lỗi xảy ra:
+                        </h5>
+                        <ul style="margin: 0; padding-left: 1.5rem;">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <!-- Basic Info Section -->
+                <h5 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color); color: var(--primary-light);">
+                    <i class="fas fa-info-circle"></i> Thông tin cơ bản
+                </h5>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label" style="font-weight: 600;">
+                                <i class="fas fa-heading"></i> Tên khóa học <span style="color: var(--error-color);">*</span>
+                            </label>
+                            <input asp-for="Title" class="form-control" placeholder="VD: Lập trình ASP.NET Core MVC từ A-Z" 
+                                   style="padding: 0.75rem;" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label asp-for="CategoryId" class="form-label" style="font-weight: 600;">
+                                <i class="fas fa-folder"></i> Danh mục <span style="color: var(--error-color);">*</span>
+                            </label>
+                            <select asp-for="CategoryId" class="form-select" asp-items="@((SelectList)ViewData["CategoryId"])" 
+                                    style="padding: 0.75rem;">
+                                <option value="">-- Chọn danh mục --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> 
+                                Nếu không có danh mục, <a asp-controller="Categories" asp-action="Create" target="_blank" style="color: var(--primary-light);">tạo mới tại đây</a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label" style="font-weight: 600;">
+                        <i class="fas fa-align-left"></i> Mô tả <span style="color: var(--error-color);">*</span>
+                    </label>
+                    <textarea asp-for="Description" class="form-control" rows="5" 
+                              placeholder="Mô tả chi tiết về nội dung khóa học, đối tượng học viên, kiến thức đạt được..."
+                              style="padding: 0.75rem;"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <!-- Instructor Section -->
+                <h5 style="margin: 2.5rem 0 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color); color: var(--primary-light);">
+                    <i class="fas fa-chalkboard-teacher"></i> Thông tin giảng viên
+                </h5>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="InstructorName" class="form-label" style="font-weight: 600;">
+                                <i class="fas fa-user"></i> Tên giảng viên
+                            </label>
+                            <input asp-for="InstructorName" class="form-control" placeholder="VD: Nguyễn Văn A" 
+                                   style="padding: 0.75rem;" />
+                            <span asp-validation-for="InstructorName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Price" class="form-label" style="font-weight: 600;">
+                                <i class="fas fa-tag"></i> Giá (VNĐ) <span style="color: var(--error-color);">*</span>
+                            </label>
+                            <input asp-for="Price" class="form-control" type="number" min="0" step="1000" placeholder="999000" 
+                                   style="padding: 0.75rem;" />
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> Nhập 0 nếu khóa học miễn phí
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="InstructorBio" class="form-label" style="font-weight: 600;">
+                        <i class="fas fa-id-card"></i> Giới thiệu giảng viên
+                    </label>
+                    <textarea asp-for="InstructorBio" class="form-control" rows="3" 
+                              placeholder="Kinh nghiệm, thành tích và chuyên môn của giảng viên..."
+                              style="padding: 0.75rem;"></textarea>
+                    <span asp-validation-for="InstructorBio" class="text-danger"></span>
+                </div>
+
+                <!-- Media Section -->
+                <h5 style="margin: 2.5rem 0 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-color); color: var(--primary-light);">
+                    <i class="fas fa-image"></i> Ảnh bìa & Trạng thái
+                </h5>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: 600;">
+                                <i class="fas fa-upload"></i> Ảnh bìa
+                            </label>
+                            <input type="file" name="coverImage" class="form-control" accept="image/*" 
+                                   style="padding: 0.75rem;" />
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> Khuyến nghị: 1200x600px, định dạng JPG/PNG, tối đa 5MB
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label" style="font-weight: 600;">
+                                <i class="fas fa-toggle-on"></i> Trạng thái
+                            </label>
+                            <select asp-for="Status" class="form-select" style="padding: 0.75rem;">
+                                <option value="0">📝 Draft (Nháp) - Chưa công khai</option>
+                                <option value="1">✅ Published (Công khai) - Hiển thị cho học viên</option>
+                            </select>
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> Chọn "Draft" để lưu nháp, "Published" để công khai
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Box -->
+                <div class="alert alert-info" style="margin-top: 2rem; border-left: 4px solid var(--primary-color);">
+                    <h6 style="margin-bottom: 0.75rem;">
+                        <i class="fas fa-lightbulb"></i> Lưu ý:
+                    </h6>
+                    <ul style="margin: 0; padding-left: 1.5rem;">
+                        <li>Các trường có dấu <span style="color: var(--error-color);">*</span> là bắt buộc</li>
+                        <li>Sau khi tạo khóa học, bạn có thể thêm bài học vào khóa học</li>
+                        <li>Khóa học ở trạng thái "Draft" sẽ không hiển thị cho học viên</li>
+                    </ul>
+                </div>
+
+                <!-- Actions -->
+                <div style="display: flex; gap: 1rem; margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.75rem 2rem; font-size: 1.1rem;">
+                        <i class="fas fa-save"></i> Tạo Khóa Học
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary" style="padding: 0.75rem 2rem; font-size: 1.1rem;">
+                        <i class="fas fa-times"></i> Hủy
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Auto-format price input
+        document.querySelector('input[name="Price"]').addEventListener('blur', function(e) {
+            if (this.value) {
+                // Round to nearest 1000
+                let value = Math.round(parseFloat(this.value) / 1000) * 1000;
+                this.value = value;
+            }
+        });
+    </script>
+}

@@ -1,0 +1,202 @@
+@model IEnumerable<Lesson>
+
+@{
+    ViewData["Title"] = "Quản lý bài học";
+    var courseId = ViewBag.CourseId as int?;
+    var courseName = ViewBag.CourseName as string;
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="margin-bottom: 0.5rem;">
+                <i class="fas fa-video"></i> Quản Lý Bài Học
+            </h1>
+            @if (!string.IsNullOrEmpty(courseName))
+            {
+                <p style="color: var(--text-secondary); margin: 0;">
+                    Khóa học: <strong style="color: var(--primary-light);">@courseName</strong>
+                </p>
+            }
+        </div>
+        <div style="display: flex; gap: 1rem;">
+            @if (courseId.HasValue)
+            {
+                <a asp-action="Create" asp-route-courseId="@courseId" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Thêm Bài Học Mới
+                </a>
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Quay Lại
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-list"></i> Chọn Khóa Học
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <!-- Lessons Table -->
+        <div class="card" style="border: 2px solid var(--border-color); overflow: hidden; background: transparent;">
+            <div class="card-body" style="padding: 0;">
+                <div class="table-responsive">
+                    <table style="margin: 0; width: 100%; border-collapse: collapse; background: transparent;">
+                        <thead style="background: var(--bg-secondary);">
+                            <tr>
+                                <th style="padding: 1rem; width: 60px;">#</th>
+                                @if (!courseId.HasValue)
+                                {
+                                    <th>Khóa học</th>
+                                }
+                                <th>Tiêu đề</th>
+                                <th>Loại</th>
+                                <th>Thời lượng</th>
+                                <th>Thứ tự</th>
+                                <th style="width: 200px;">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var lesson in Model.OrderBy(l => l.OrderIndex))
+                            {
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <td style="padding: 1rem;">
+                                        <span class="badge badge-primary">@lesson.OrderIndex</span>
+                                    </td>
+                                    @if (!courseId.HasValue)
+                                    {
+                                        <td>
+                                            <a asp-controller="Lessons" asp-action="Index" asp-route-courseId="@lesson.CourseId" style="text-decoration: none; font-weight: 600;">
+                                                @lesson.Course?.Title
+                                            </a>
+                                        </td>
+                                    }
+                                    <td>
+                                        <strong>@lesson.Title</strong>
+                                        @if (!string.IsNullOrEmpty(lesson.Description))
+                                        {
+                                            <br />
+                                            <small style="color: var(--text-muted);">
+                                                @(lesson.Description.Length > 80 ? lesson.Description.Substring(0, 80) + "..." : lesson.Description)
+                                            </small>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (lesson.VideoUrl?.Contains("youtube.com") == true || lesson.VideoUrl?.Contains("youtu.be") == true)
+                                        {
+                                            <span class="badge" style="background: #FF0000;">
+                                                <i class="fab fa-youtube"></i> YouTube
+                                            </span>
+                                        }
+                                        else if (lesson.VideoUrl?.Contains("vimeo.com") == true)
+                                        {
+                                            <span class="badge" style="background: #1AB7EA;">
+                                                <i class="fab fa-vimeo"></i> Vimeo
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-primary">
+                                                <i class="fas fa-video"></i> Video
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (lesson.DurationMinutes > 0)
+                                        {
+                                            <span style="color: var(--text-secondary);">
+                                                <i class="fas fa-clock"></i> @lesson.DurationMinutes phút
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="color: var(--text-muted);">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <code style="background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px;">
+                                            @lesson.OrderIndex
+                                        </code>
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; gap: 0.5rem;">
+                                            <a asp-action="Edit" asp-route-id="@lesson.Id" class="btn btn-sm btn-primary" title="Sửa">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <form asp-action="Delete" asp-route-id="@lesson.Id" method="post" style="display: inline;"
+                                                  onsubmit="return confirm('Bạn có chắc muốn xóa bài học này?');">
+                                                <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="row" style="margin-top: 2rem;">
+            <div class="col-md-4">
+                <div class="card" style="text-align: center; padding: 1.5rem;">
+                    <h3 style="color: var(--primary-light); margin-bottom: 0.5rem;">@Model.Count()</h3>
+                    <p style="color: var(--text-muted); margin: 0;">Tổng bài học</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="text-align: center; padding: 1.5rem;">
+                    <h3 style="color: var(--accent-color); margin-bottom: 0.5rem;">@Model.Sum(l => l.DurationMinutes)</h3>
+                    <p style="color: var(--text-muted); margin: 0;">Tổng phút</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="text-align: center; padding: 1.5rem;">
+                    <h3 style="color: var(--secondary-color); margin-bottom: 0.5rem;">
+                        @(Model.Any() ? Math.Round(Model.Average(l => l.DurationMinutes), 1) : 0)
+                    </h3>
+                    <p style="color: var(--text-muted); margin: 0;">TB phút/bài</p>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="card" style="text-align: center; padding: 4rem 2rem;">
+            <div style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;">
+                <i class="fas fa-video"></i>
+            </div>
+            <h3 style="margin-bottom: 1rem;">Chưa có bài học nào</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                @if (courseId.HasValue)
+                {
+                    <text>Bắt đầu thêm bài học cho khóa học này.</text>
+                }
+                else
+                {
+                    <text>Vui lòng chọn một khóa học để quản lý bài học.</text>
+                }
+            </p>
+            @if (courseId.HasValue)
+            {
+                <a asp-action="Create" asp-route-courseId="@courseId" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Thêm Bài Học Đầu Tiên
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-primary">
+                    <i class="fas fa-list"></i> Chọn Khóa Học
+                </a>
+            }
+        </div>
+    }
+</div>

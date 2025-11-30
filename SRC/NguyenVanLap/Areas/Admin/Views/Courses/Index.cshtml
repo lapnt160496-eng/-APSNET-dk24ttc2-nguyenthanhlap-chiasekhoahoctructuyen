@@ -1,0 +1,277 @@
+@model IEnumerable<Course>
+
+@{
+    ViewData["Title"] = "Quản lý khóa học";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="padding: 3rem 0; max-width: 1600px;">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+        <div>
+            <h1 style="margin-bottom: 0.5rem; font-size: 2.5rem;">
+                <i class="fas fa-book" style="color: var(--primary-light);"></i> Quản Lý Khóa Học
+            </h1>
+            <p style="color: var(--text-muted); margin: 0;">
+                Tổng số: <strong style="color: var(--primary-light);">@Model.Count()</strong> khóa học
+            </p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 1.1rem;">
+            <i class="fas fa-plus-circle"></i> Thêm Khóa Học Mới
+        </a>
+    </div>
+
+    @if (Model.Any())
+    {
+        <!-- Table -->
+        <div class="card" style="border: 2px solid var(--border-color); overflow: hidden; background: transparent;">
+            <div class="table-responsive">
+                <table style="margin: 0; width: 100%; border-collapse: collapse; background: transparent;">
+                    <thead style="background: var(--bg-tertiary); position: sticky; top: 0; z-index: 10;">
+                        <tr>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 80px;">
+                                ID
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); min-width: 300px;">
+                                Khóa học
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 150px;">
+                                Danh mục
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 180px;">
+                                Giảng viên
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 120px; text-align: right;">
+                                Giá
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 100px; text-align: center;">
+                                Bài học
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 130px; text-align: center;">
+                                Trạng thái
+                            </th>
+                            <th style="padding: 1.25rem; font-weight: 700; color: var(--text-primary); border-bottom: 2px solid var(--primary-color); width: 200px; text-align: center;">
+                                Thao tác
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var course in Model.OrderByDescending(c => c.CreatedAt))
+                        {
+                            <tr style="border-bottom: 1px solid var(--border-color); transition: all 0.2s ease;"
+                                onmouseover="this.style.background='var(--bg-tertiary)'"
+                                onmouseout="this.style.background='transparent'">
+                                
+                                <!-- ID -->
+                                <td style="padding: 1.25rem; vertical-align: middle;">
+                                    <code style="background: var(--primary-color); color: white; padding: 0.5rem 0.75rem; border-radius: var(--radius-md); font-weight: 700; font-size: 0.9rem;">
+                                        #@course.Id
+                                    </code>
+                                </td>
+
+                                <!-- Course Info -->
+                                <td style="padding: 1.25rem; vertical-align: middle;">
+                                    <div style="display: flex; align-items: center; gap: 1rem;">
+                                        @if (!string.IsNullOrEmpty(course.CoverImage))
+                                        {
+                                            <img src="@course.CoverImage" alt="@course.Title" 
+                                                 style="width: 80px; height: 60px; object-fit: cover; border-radius: var(--radius-md); border: 2px solid var(--border-color);" />
+                                        }
+                                        else
+                                        {
+                                            <div style="width: 80px; height: 60px; background: var(--gradient-primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-book" style="color: rgba(255,255,255,0.5); font-size: 1.5rem;"></i>
+                                            </div>
+                                        }
+                                        <div>
+                                            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; font-size: 1.05rem;">
+                                                @course.Title
+                                            </div>
+                                            <div style="color: var(--text-muted); font-size: 0.85rem;">
+                                                <i class="fas fa-calendar"></i> @course.CreatedAt.ToString("dd/MM/yyyy")
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <!-- Category -->
+                                <td style="padding: 1.25rem; vertical-align: middle;">
+                                    <span class="badge badge-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                                        <i class="fas fa-folder"></i> @course.Category.Name
+                                    </span>
+                                </td>
+
+                                <!-- Instructor -->
+                                <td style="padding: 1.25rem; vertical-align: middle;">
+                                    <div style="color: var(--text-secondary); font-weight: 500;">
+                                        <i class="fas fa-chalkboard-teacher" style="color: var(--primary-light);"></i> 
+                                        @course.InstructorName
+                                    </div>
+                                </td>
+
+                                <!-- Price -->
+                                <td style="padding: 1.25rem; vertical-align: middle; text-align: right;">
+                                    <div style="font-weight: 700; font-size: 1.1rem; color: var(--success-color);">
+                                        @course.Price.ToString("N0")
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted);">
+                                        VNĐ
+                                    </div>
+                                </td>
+
+                                <!-- Lessons Count -->
+                                <td style="padding: 1.25rem; vertical-align: middle; text-align: center;">
+                                    <a asp-controller="Lessons" asp-action="Index" asp-route-courseId="@course.Id" 
+                                       class="btn btn-sm btn-outline-primary" style="padding: 0.5rem 1rem; font-weight: 600;">
+                                        <i class="fas fa-video"></i> @course.Lessons.Count
+                                    </a>
+                                </td>
+
+                                <!-- Status -->
+                                <td style="padding: 1.25rem; vertical-align: middle; text-align: center;">
+                                    @if (course.Status == CourseStatus.Published)
+                                    {
+                                        <span class="badge badge-success" style="padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600;">
+                                            <i class="fas fa-check-circle"></i> Published
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning" style="padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600;">
+                                            <i class="fas fa-clock"></i> Draft
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- Actions -->
+                                <td style="padding: 1.25rem; vertical-align: middle;">
+                                    <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                        <a asp-action="Edit" asp-route-id="@course.Id" 
+                                           class="btn btn-sm btn-primary" 
+                                           style="padding: 0.6rem 1rem; font-weight: 600;"
+                                           title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i> Sửa
+                                        </a>
+                                        <form asp-action="Delete" asp-route-id="@course.Id" method="post" style="margin: 0; display: inline;"
+                                              onsubmit="return confirm('⚠️ Bạn có chắc muốn xóa khóa học này?\n\nHành động này sẽ xóa:\n- Tất cả bài học\n- Dữ liệu liên quan\n\nKhông thể hoàn tác!');">
+                                            <button type="submit" class="btn btn-sm btn-danger" 
+                                                    style="padding: 0.6rem 1rem; font-weight: 600;"
+                                                    title="Xóa">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="row" style="margin-top: 2.5rem;">
+            <div class="col-md-3">
+                <div class="card" style="text-align: center; padding: 1.5rem; border: 2px solid var(--primary-color); background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);">
+                    <div style="font-size: 2.5rem; color: var(--primary-light); margin-bottom: 0.5rem; font-weight: 700;">
+                        @Model.Count()
+                    </div>
+                    <div style="color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+                        <i class="fas fa-book"></i> Tổng khóa học
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="text-align: center; padding: 1.5rem; border: 2px solid var(--success-color); background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);">
+                    <div style="font-size: 2.5rem; color: var(--success-color); margin-bottom: 0.5rem; font-weight: 700;">
+                        @Model.Count(c => c.Status == CourseStatus.Published)
+                    </div>
+                    <div style="color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+                        <i class="fas fa-check-circle"></i> Đã xuất bản
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="text-align: center; padding: 1.5rem; border: 2px solid var(--accent-color); background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);">
+                    <div style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 0.5rem; font-weight: 700;">
+                        @Model.Sum(c => c.Lessons.Count)
+                    </div>
+                    <div style="color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+                        <i class="fas fa-video"></i> Tổng bài học
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card" style="text-align: center; padding: 1.5rem; border: 2px solid var(--secondary-color); background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);">
+                    <div style="font-size: 1.8rem; color: var(--secondary-color); margin-bottom: 0.5rem; font-weight: 700;">
+                        @Model.Average(c => c.Price).ToString("N0")
+                    </div>
+                    <div style="color: var(--text-secondary); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;">
+                        <i class="fas fa-tag"></i> Giá TB (VNĐ)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="card" style="text-align: center; padding: 5rem 2rem; border: 2px dashed var(--border-color);">
+            <div style="font-size: 5rem; color: var(--text-muted); margin-bottom: 2rem;">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3 style="margin-bottom: 1rem; color: var(--text-primary);">
+                Chưa có khóa học nào
+            </h3>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">
+                Bắt đầu tạo khóa học đầu tiên của bạn ngay bây giờ!
+            </p>
+            <a asp-action="Create" class="btn btn-primary" style="padding: 1rem 2rem; font-size: 1.1rem;">
+                <i class="fas fa-plus-circle"></i> Tạo Khóa Học Đầu Tiên
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .table tbody tr:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        position: relative;
+        z-index: 1;
+    }
+
+    .btn-sm {
+        transition: all 0.2s ease;
+    }
+
+    .btn-sm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .badge {
+        transition: all 0.2s ease;
+    }
+
+    .badge:hover {
+        transform: scale(1.05);
+    }
+
+    /* Scrollbar styling */
+    .table-responsive::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-responsive::-webkit-scrollbar-track {
+        background: var(--bg-secondary);
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb {
+        background: var(--primary-color);
+        border-radius: 4px;
+    }
+
+    .table-responsive::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-dark);
+    }
+</style>

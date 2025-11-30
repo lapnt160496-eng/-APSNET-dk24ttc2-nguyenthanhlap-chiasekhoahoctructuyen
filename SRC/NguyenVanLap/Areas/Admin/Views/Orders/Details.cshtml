@@ -1,0 +1,262 @@
+@model Order
+
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1>
+                <i class="fas fa-receipt"></i> Chi Tiết Đơn Hàng
+            </h1>
+            <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                Mã đơn: <code style="background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px;">#@Model.Id</code>
+            </p>
+        </div>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay Lại
+        </a>
+    </div>
+
+    <!-- Content -->
+    <div class="row">
+        <!-- Main Info -->
+        <div class="col-lg-8">
+            <!-- Order Info -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body" style="padding: 2rem;">
+                    <h5 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);">
+                        <i class="fas fa-info-circle"></i> Thông tin đơn hàng
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Mã đơn hàng
+                            </label>
+                            <div>
+                                <code style="background: var(--bg-tertiary); padding: 0.5rem 1rem; border-radius: 4px; font-size: 1.1rem; font-weight: 700;">
+                                    #@Model.Id
+                                </code>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Trạng thái thanh toán
+                            </label>
+                            <div>
+                                @switch (Model.PaymentStatus)
+                                {
+                                    case PaymentStatus.Pending:
+                                        <span class="badge badge-warning" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                            <i class="fas fa-clock"></i> Chờ thanh toán
+                                        </span>
+                                        break;
+                                    case PaymentStatus.Completed:
+                                        <span class="badge badge-success" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                            <i class="fas fa-check-circle"></i> Đã thanh toán
+                                        </span>
+                                        break;
+                                    case PaymentStatus.Failed:
+                                        <span class="badge badge-danger" style="font-size: 1rem; padding: 0.5rem 1rem;">
+                                            <i class="fas fa-times-circle"></i> Thất bại
+                                        </span>
+                                        break;
+                                    case PaymentStatus.Refunded:
+                                        <span class="badge" style="background: var(--text-muted); font-size: 1rem; padding: 0.5rem 1rem;">
+                                            <i class="fas fa-undo"></i> Đã hoàn tiền
+                                        </span>
+                                        break;
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Ngày tạo
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                <i class="fas fa-calendar"></i> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Phương thức thanh toán
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                @if (!string.IsNullOrEmpty(Model.PaymentMethod))
+                                {
+                                    @if (Model.PaymentMethod == "Demo")
+                                    {
+                                        <span><i class="fas fa-flask"></i> Demo</span>
+                                    }
+                                    else if (Model.PaymentMethod == "VNPay")
+                                    {
+                                        <span><i class="fas fa-credit-card"></i> VNPay</span>
+                                    }
+                                    else if (Model.PaymentMethod == "MoMo")
+                                    {
+                                        <span><i class="fas fa-mobile-alt"></i> MoMo</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@Model.PaymentMethod</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span style="color: var(--text-muted);">Chưa xác định</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Tổng tiền
+                            </label>
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--success-color);">
+                                @Model.Amount.ToString("N0") VNĐ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Info -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body" style="padding: 2rem;">
+                    <h5 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);">
+                        <i class="fas fa-user"></i> Thông tin khách hàng
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Họ tên
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                @Model.User.FullName
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Email
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                @Model.User.Email
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <a asp-controller="Users" asp-action="Details" asp-route-id="@Model.UserId" class="btn btn-sm btn-secondary">
+                                <i class="fas fa-eye"></i> Xem chi tiết khách hàng
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Info -->
+            <div class="card">
+                <div class="card-body" style="padding: 2rem;">
+                    <h5 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);">
+                        <i class="fas fa-book"></i> Thông tin khóa học
+                    </h5>
+                    <div style="display: flex; gap: 1.5rem; align-items: start;">
+                        @if (!string.IsNullOrEmpty(Model.Course.CoverImage))
+                        {
+                            <img src="@Model.Course.CoverImage" alt="@Model.Course.Title" 
+                                 style="width: 150px; height: 100px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);" />
+                        }
+                        <div style="flex: 1;">
+                            <h6 style="margin-bottom: 0.5rem; color: var(--text-primary);">
+                                @Model.Course.Title
+                            </h6>
+                            <p style="color: var(--text-secondary); margin-bottom: 0.5rem; font-size: 0.9rem;">
+                                @(Model.Course.Description != null && Model.Course.Description.Length > 150 ? Model.Course.Description.Substring(0, 150) + "..." : Model.Course.Description)
+                            </p>
+                            <div style="margin-top: 1rem;">
+                                <span style="color: var(--text-muted); margin-right: 1rem;">
+                                    <i class="fas fa-user"></i> @Model.Course.InstructorName
+                                </span>
+                                <span style="color: var(--text-muted);">
+                                    <i class="fas fa-video"></i> @(Model.Course.Lessons?.Count ?? 0) bài học
+                                </span>
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                <a asp-controller="Courses" asp-action="Details" asp-route-id="@Model.CourseId" asp-area="" 
+                                   class="btn btn-sm btn-secondary" target="_blank">
+                                    <i class="fas fa-external-link-alt"></i> Xem khóa học
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Timeline -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body">
+                    <h5 style="margin-bottom: 1rem;">
+                        <i class="fas fa-history"></i> Lịch sử
+                    </h5>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <div style="padding-left: 1.5rem; border-left: 2px solid var(--border-color); position: relative;">
+                            <div style="position: absolute; left: -6px; top: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--primary-color);"></div>
+                            <div style="margin-bottom: 1.5rem;">
+                                <strong style="color: var(--text-primary);">Đơn hàng được tạo</strong>
+                                <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                    @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss")
+                                </div>
+                            </div>
+                            
+                            @if (Model.PaymentStatus == PaymentStatus.Completed)
+                            {
+                                <div style="position: absolute; left: -6px; top: 3rem; width: 10px; height: 10px; border-radius: 50%; background: var(--success-color);"></div>
+                                <div>
+                                    <strong style="color: var(--success-color);">Thanh toán thành công</strong>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                        @(Model.CompletedAt?.ToString("dd/MM/yyyy HH:mm:ss") ?? Model.CreatedAt.ToString("dd/MM/yyyy HH:mm:ss"))
+                                    </div>
+                                </div>
+                            }
+                            else if (Model.PaymentStatus == PaymentStatus.Failed)
+                            {
+                                <div style="position: absolute; left: -6px; top: 3rem; width: 10px; height: 10px; border-radius: 50%; background: var(--error-color);"></div>
+                                <div>
+                                    <strong style="color: var(--error-color);">Thanh toán thất bại</strong>
+                                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                        @(Model.CompletedAt?.ToString("dd/MM/yyyy HH:mm:ss") ?? "N/A")
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 style="margin-bottom: 1rem;">
+                        <i class="fas fa-file-invoice-dollar"></i> Tóm tắt
+                    </h5>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                            <span>Giá khóa học</span>
+                            <strong>@Model.Course.Price.ToString("N0") VNĐ</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                            <span>Giảm giá</span>
+                            <strong>0 VNĐ</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 1.1rem;">
+                            <strong style="color: var(--text-primary);">Tổng cộng</strong>
+                            <strong style="color: var(--success-color);">@Model.Amount.ToString("N0") VNĐ</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

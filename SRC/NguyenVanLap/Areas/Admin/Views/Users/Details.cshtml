@@ -1,0 +1,250 @@
+@using nguyenvanlap.Models
+@model nguyenvanlap.Models.ApplicationUser
+@{
+    ViewData["Title"] = "Chi tiết người dùng";
+    var roles = ViewBag.Roles as IList<string>;
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+            {
+                <img src="@Model.ProfilePicture" alt="@Model.FullName" 
+                     style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color);" />
+            }
+            else
+            {
+                <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: 700;">
+                    @Model.FullName?.Substring(0, 1).ToUpper()
+                </div>
+            }
+            <div>
+                <h1 style="margin-bottom: 0.5rem;">@Model.FullName</h1>
+                <p style="color: var(--text-secondary); margin: 0;">
+                    <i class="fas fa-envelope"></i> @Model.Email
+                </p>
+                <div style="margin-top: 0.5rem;">
+                    @if (roles != null && roles.Contains("Admin"))
+                    {
+                        <span class="badge" style="background: var(--error-color);">
+                            <i class="fas fa-crown"></i> Admin
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-primary">
+                            <i class="fas fa-user"></i> User
+                        </span>
+                    }
+                    
+                    @if (Model.IsActive)
+                    {
+                        <span class="badge badge-success">
+                            <i class="fas fa-check"></i> Active
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="badge" style="background: var(--text-muted);">
+                            <i class="fas fa-ban"></i> Inactive
+                        </span>
+                    }
+                </div>
+            </div>
+        </div>
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Quay Lại
+        </a>
+    </div>
+
+    <!-- Content -->
+    <div class="row">
+        <!-- Main Info -->
+        <div class="col-lg-8">
+            <!-- Basic Info -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body" style="padding: 2rem;">
+                    <h5 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);">
+                        <i class="fas fa-info-circle"></i> Thông tin cơ bản
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Họ tên
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                @Model.FullName
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Email
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                @Model.Email
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                User ID
+                            </label>
+                            <div>
+                                <code style="background: var(--bg-tertiary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">
+                                    @Model.Id
+                                </code>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin-bottom: 1rem;">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Ngày tạo
+                            </label>
+                            <div style="color: var(--text-primary); font-weight: 600;">
+                                <i class="fas fa-calendar"></i> @Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Vai trò
+                            </label>
+                            <div>
+                                @if (roles != null && roles.Any())
+                                {
+                                    foreach (var role in roles)
+                                    {
+                                        <span class="badge badge-primary" style="margin-right: 0.5rem;">@role</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span style="color: var(--text-muted);">Chưa có vai trò</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label style="color: var(--text-muted); font-size: 0.9rem; display: block; margin-bottom: 0.25rem;">
+                                Trạng thái
+                            </label>
+                            <div>
+                                @if (Model.IsActive)
+                                {
+                                    <span style="color: var(--success-color); font-weight: 600;">
+                                        <i class="fas fa-check-circle"></i> Đang hoạt động
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color: var(--text-muted); font-weight: 600;">
+                                        <i class="fas fa-ban"></i> Đã vô hiệu hóa
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity (Placeholder - would need data from context) -->
+            <div class="card">
+                <div class="card-body" style="padding: 2rem;">
+                    <h5 style="margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border-color);">
+                        <i class="fas fa-history"></i> Hoạt động gần đây
+                    </h5>
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <i class="fas fa-info-circle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p>Thông tin hoạt động sẽ được hiển thị ở đây</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Actions -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body">
+                    <h5 style="margin-bottom: 1rem;">
+                        <i class="fas fa-cog"></i> Thao tác
+                    </h5>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <form asp-action="ToggleActive" method="post" style="width: 100%;">
+                            <input type="hidden" name="userId" value="@Model.Id" />
+                            <button type="submit" class="btn @(Model.IsActive ? "btn-warning" : "btn-success")" style="width: 100%;">
+                                <i class="fas fa-@(Model.IsActive ? "ban" : "check")"></i> 
+                                @(Model.IsActive ? "Vô hiệu hóa" : "Kích hoạt")
+                            </button>
+                        </form>
+                        
+                        @if (roles != null && !roles.Contains("Admin"))
+                        {
+                            <form asp-action="ChangeRole" method="post" style="width: 100%;"
+                                  onsubmit="return confirm('Cấp quyền Admin cho user này?');">
+                                <input type="hidden" name="userId" value="@Model.Id" />
+                                <input type="hidden" name="role" value="Admin" />
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-user-shield"></i> Cấp quyền Admin
+                                </button>
+                            </form>
+                        }
+                        else if (roles != null && roles.Contains("Admin"))
+                        {
+                            <form asp-action="ChangeRole" method="post" style="width: 100%;"
+                                  onsubmit="return confirm('Gỡ quyền Admin khỏi user này?');">
+                                <input type="hidden" name="userId" value="@Model.Id" />
+                                <input type="hidden" name="role" value="User" />
+                                <button type="submit" class="btn btn-warning" style="width: 100%;">
+                                    <i class="fas fa-user-minus"></i> Gỡ quyền Admin
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats (Placeholder) -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body">
+                    <h5 style="margin-bottom: 1rem;">
+                        <i class="fas fa-chart-bar"></i> Thống kê
+                    </h5>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                            <span>Khóa học đã mua</span>
+                            <strong style="color: var(--primary-light);">0</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color);">
+                            <span>Tổng chi tiêu</span>
+                            <strong style="color: var(--success-color);">0 VNĐ</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>Đơn hàng</span>
+                            <strong style="color: var(--accent-color);">0</strong>
+                        </div>
+                    </div>
+                    <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin: 1rem 0 0 0;">
+                        <i class="fas fa-info-circle"></i> Dữ liệu sẽ được cập nhật
+                    </p>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="card" style="border-color: var(--error-color);">
+                <div class="card-body">
+                    <h5 style="margin-bottom: 1rem; color: var(--error-color);">
+                        <i class="fas fa-exclamation-triangle"></i> Vùng nguy hiểm
+                    </h5>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Xóa người dùng sẽ xóa tất cả dữ liệu liên quan. Hành động này không thể hoàn tác!
+                    </p>
+                    <form asp-action="Delete" asp-route-id="@Model.Id" method="post"
+                          onsubmit="return confirm('⚠️ BẠN CÓ CHẮC CHẮN?\n\nXóa user sẽ xóa:\n- Tất cả đơn hàng\n- Tiến độ học tập\n- Đánh giá\n\nHành động này KHÔNG THỂ HOÀN TÁC!');">
+                        <button type="submit" class="btn btn-danger" style="width: 100%;">
+                            <i class="fas fa-trash"></i> Xóa Người Dùng
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

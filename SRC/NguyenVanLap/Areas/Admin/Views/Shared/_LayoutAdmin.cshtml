@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Admin Panel</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --admin-bg: #f3f4f6;
+            --sidebar-bg: #ffffff;
+            --sidebar-text: #4b5563;
+            --sidebar-active-bg: #eff6ff;
+            --sidebar-active-text: #2563eb;
+        }
+
+        body {
+            background-color: var(--admin-bg);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .admin-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styling */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid #e5e7eb;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.02);
+        }
+
+        .sidebar-header {
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .brand-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1e293b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-logo i {
+            color: #2563eb;
+            font-size: 1.5rem;
+        }
+
+        .sidebar-menu {
+            padding: 1.5rem 1rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .menu-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: #9ca3af;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            padding-left: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            color: var(--sidebar-text);
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .nav-link:hover {
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+
+        .nav-link.active {
+            background-color: var(--sidebar-active-bg);
+            color: var(--sidebar-active-text);
+        }
+
+        .nav-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid #f3f4f6;
+            background: #f9fafb;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #e0e7ff;
+            color: #3730a3;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Main Content Styling */
+        .admin-main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-header {
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 900;
+        }
+
+        .page-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #111827;
+            margin: 0;
+        }
+
+        .content-wrapper {
+            padding: 2rem;
+            flex: 1;
+        }
+
+        /* Card Styling Override for Admin */
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid #f3f4f6;
+            padding: 1.25rem 1.5rem;
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Responsive */
+        @@media (max-width: 992px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            .admin-main {
+                margin-left: 0;
+            }
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="brand-logo">
+                    <i class="fas fa-layer-group"></i>
+                    <span>Admin Portal</span>
+                </a>
+            </div>
+
+            <div class="sidebar-menu">
+                <div class="menu-label">Tổng quan</div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+
+                <div class="menu-label mt-4">Quản lý Đào tạo</div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Courses" asp-action="Index">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Khóa học</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Categories" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Categories" asp-action="Index">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Danh mục</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Lessons" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Lessons" asp-action="Index">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Bài học</span>
+                    </a>
+                </div>
+
+                <div class="menu-label mt-4">Kinh doanh & Người dùng</div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Orders" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Orders" asp-action="Index">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Users" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Users" asp-action="Index">
+                        <i class="fas fa-users"></i>
+                        <span>Học viên</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Reviews" ? "active" : "")" 
+                       asp-area="Admin" asp-controller="Reviews" asp-action="Index">
+                        <i class="fas fa-star"></i>
+                        <span>Đánh giá</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar">
+                        @User.Identity?.Name?.Substring(0, 1).ToUpper()
+                    </div>
+                    <div style="overflow: hidden;">
+                        <div class="text-truncate fw-bold" style="font-size: 0.9rem;">@User.Identity?.Name</div>
+                        <div class="text-muted" style="font-size: 0.75rem;">Administrator</div>
+                    </div>
+                </div>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-outline-primary w-100 btn-sm">
+                    <i class="fas fa-arrow-left me-2"></i> Về trang chủ
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="top-header">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-light d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">@ViewData["Title"]</h1>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-light rounded-circle position-relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New alerts</span>
+                        </span>
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-light rounded-circle" data-bs-toggle="dropdown">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#">Cài đặt</a></li>
+                            <li><a class="dropdown-item" href="#">Hồ sơ</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                    <button type="submit" class="dropdown-item text-danger">Đăng xuất</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle fs-4 me-3"></i>
+                            <div>@TempData["Success"]</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show shadow-sm border-0" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-exclamation-circle fs-4 me-3"></i>
+                            <div>@TempData["Error"]</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

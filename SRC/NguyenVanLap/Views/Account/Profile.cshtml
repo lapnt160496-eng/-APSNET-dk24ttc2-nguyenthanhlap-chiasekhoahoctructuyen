@@ -1,0 +1,101 @@
+@model ApplicationUser
+
+@{
+    ViewData["Title"] = "Hồ sơ cá nhân";
+}
+
+<div class="container" style="max-width: 800px; margin: 3rem auto;">
+    <h1 style="margin-bottom: 2rem;">
+        <i class="fas fa-user-circle"></i> Hồ Sơ Cá Nhân
+    </h1>
+
+    <div class="card">
+        <div class="card-body" style="padding: 2rem;">
+            <!-- Profile Picture -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                @if (!string.IsNullOrEmpty(Model.ProfilePicture))
+                {
+                    <img src="@Model.ProfilePicture" alt="@Model.FullName" 
+                         style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color);">
+                }
+                else
+                {
+                    <div style="width: 150px; height: 150px; border-radius: 50%; background: var(--gradient-primary); 
+                                display: inline-flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">
+                        @Model.FullName?.Substring(0, 1).ToUpper()
+                    </div>
+                }
+            </div>
+
+            <!-- Profile Info -->
+            <form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label">Họ và tên</label>
+                    <input type="text" name="fullName" class="form-control" value="@Model.FullName" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" value="@Model.Email" disabled />
+                    <small class="text-muted">Email không thể thay đổi</small>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Số điện thoại</label>
+                    <input type="tel" name="phoneNumber" class="form-control" value="@Model.PhoneNumber" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Ảnh đại diện</label>
+                    <input type="file" name="profilePicture" class="form-control" accept="image/*" />
+                    <small class="text-muted">Chọn ảnh mới để thay đổi</small>
+                </div>
+
+                <hr style="margin: 2rem 0; border-color: var(--border-color);">
+
+                <h4 style="margin-bottom: 1rem;">Đổi mật khẩu</h4>
+
+                <div class="mb-3">
+                    <label class="form-label">Mật khẩu hiện tại</label>
+                    <input type="password" name="currentPassword" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Mật khẩu mới</label>
+                    <input type="password" name="newPassword" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Xác nhận mật khẩu mới</label>
+                    <input type="password" name="confirmPassword" class="form-control" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Cập nhật hồ sơ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Account Stats -->
+    <div class="row" style="margin-top: 2rem;">
+        <div class="col-md-4">
+            <div class="card" style="text-align: center; padding: 1.5rem;">
+                <h3 style="color: var(--primary-light); margin-bottom: 0.5rem;">@ViewBag.TotalCourses</h3>
+                <p style="color: var(--text-muted); margin: 0;">Khóa học đã mua</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="text-align: center; padding: 1.5rem;">
+                <h3 style="color: var(--primary-light); margin-bottom: 0.5rem;">@ViewBag.CompletedCourses</h3>
+                <p style="color: var(--text-muted); margin: 0;">Khóa học hoàn thành</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="text-align: center; padding: 1.5rem;">
+                <h3 style="color: var(--primary-light); margin-bottom: 0.5rem;">@Model.CreatedAt.ToString("dd/MM/yyyy")</h3>
+                <p style="color: var(--text-muted); margin: 0;">Ngày tham gia</p>
+            </div>
+        </div>
+    </div>
+</div>

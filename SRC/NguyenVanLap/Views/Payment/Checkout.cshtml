@@ -1,0 +1,80 @@
+@model Course
+
+@{
+    ViewData["Title"] = "Thanh toán";
+}
+
+<div class="container" style="max-width: 800px; margin: 3rem auto;">
+    <h1 style="margin-bottom: 2rem; text-align: center;">
+        <i class="fas fa-shopping-cart"></i> Thanh Toán
+    </h1>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="card-body" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 1.5rem;">Thông tin thanh toán</h3>
+                    
+                    <form asp-action="ProcessPayment" method="post">
+                        <input type="hidden" name="courseId" value="@Model.Id" />
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Phương thức thanh toán</label>
+                            <select name="paymentMethod" class="form-select" required>
+                                <option value="">Chọn phương thức</option>
+                                <option value="Demo">Demo (Thanh toán giả lập)</option>
+                                <option value="VNPay">VNPay</option>
+                                <option value="MoMo">MoMo</option>
+                                <option value="Banking">Chuyển khoản ngân hàng</option>
+                            </select>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <strong>Lưu ý:</strong> Hiện tại hệ thống đang ở chế độ demo. Chọn "Demo" để thanh toán giả lập.
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-credit-card"></i> Thanh toán @Model.Price.ToString("N0") đ
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-body" style="padding: 2rem;">
+                    <h4 style="margin-bottom: 1.5rem;">Thông tin đơn hàng</h4>
+                    
+                    <img src="@(Model.CoverImage ?? "/images/default-course.jpg")" alt="@Model.Title" 
+                         style="width: 100%; border-radius: var(--radius-md); margin-bottom: 1rem;" 
+                         onerror="this.src='/images/default-course.jpg'">
+                    
+                    <h5>@Model.Title</h5>
+                    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
+                        <i class="fas fa-user"></i> @Model.InstructorName
+                    </p>
+
+                    <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
+
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Giá khóa học:</span>
+                        <strong>@Model.Price.ToString("N0") đ</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span>Giảm giá:</span>
+                        <strong>0 đ</strong>
+                    </div>
+
+                    <hr style="border-color: var(--border-color); margin: 1.5rem 0;">
+
+                    <div style="display: flex; justify-content: space-between; font-size: 1.25rem;">
+                        <strong>Tổng cộng:</strong>
+                        <strong style="color: var(--primary-light);">@Model.Price.ToString("N0") đ</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

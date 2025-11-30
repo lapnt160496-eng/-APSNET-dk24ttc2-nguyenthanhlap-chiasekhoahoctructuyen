@@ -1,0 +1,175 @@
+@using nguyenvanlap.Models
+@model Lesson
+@{
+    ViewData["Title"] = "Thêm bài học mới";
+    var course = ViewData["Course"] as Course;
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <!-- Header -->
+    <div style="margin-bottom: 2rem;">
+        <h1>
+            <i class="fas fa-plus-circle"></i> Thêm Bài Học Mới
+        </h1>
+        @if (course != null)
+        {
+            <p style="color: var(--text-secondary); margin-top: 0.5rem;">
+                Khóa học: <strong style="color: var(--primary-light);">@course.Title</strong>
+            </p>
+        }
+    </div>
+
+    <!-- Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body" style="padding: 2rem;">
+                    <form asp-action="Create" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="CourseId" />
+                        <input type="hidden" asp-for="OrderIndex" />
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label">
+                                <i class="fas fa-heading"></i> Tiêu đề bài học <span style="color: var(--error-color);">*</span>
+                            </label>
+                            <input asp-for="Title" class="form-control" placeholder="VD: Giới thiệu về HTML" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label">
+                                <i class="fas fa-align-left"></i> Mô tả
+                            </label>
+                            <textarea asp-for="Description" class="form-control" rows="4" 
+                                      placeholder="Mô tả ngắn gọn về nội dung bài học..."></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VideoUrl" class="form-label">
+                                <i class="fas fa-video"></i> URL Video
+                            </label>
+                            <input asp-for="VideoUrl" class="form-control" 
+                                   placeholder="https://www.youtube.com/watch?v=... hoặc https://vimeo.com/..." />
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> 
+                                Hỗ trợ: YouTube, Vimeo, hoặc link video trực tiếp (.mp4)
+                            </small>
+                            <span asp-validation-for="VideoUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DocumentUrl" class="form-label">
+                                <i class="fas fa-file-alt"></i> URL Tài liệu
+                            </label>
+                            <input asp-for="DocumentUrl" class="form-control" 
+                                   placeholder="https://... (PDF, DOC, slides, etc.)" />
+                            <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> 
+                                Link đến tài liệu bổ sung (tùy chọn)
+                            </small>
+                            <span asp-validation-for="DocumentUrl" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="DurationMinutes" class="form-label">
+                                    <i class="fas fa-clock"></i> Thời lượng (phút) <span style="color: var(--error-color);">*</span>
+                                </label>
+                                <input asp-for="DurationMinutes" type="number" class="form-control" 
+                                       min="1" placeholder="VD: 15" />
+                                <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fas fa-sort-numeric-up"></i> Thứ tự
+                                </label>
+                                <input type="number" class="form-control" value="@Model.OrderIndex" readonly 
+                                       style="background: var(--bg-tertiary); cursor: not-allowed;" />
+                                <small style="color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                    <i class="fas fa-info-circle"></i> Tự động
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info" style="margin-top: 1.5rem;">
+                            <i class="fas fa-lightbulb"></i>
+                            <strong>Mẹo:</strong> Bạn có thể sắp xếp lại thứ tự bài học sau khi tạo bằng cách chỉnh sửa từng bài.
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Tạo Bài Học
+                            </button>
+                            <a asp-action="Index" asp-route-courseId="@Model.CourseId" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Preview -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-body">
+                    <h5 style="margin-bottom: 1rem;">
+                        <i class="fas fa-eye"></i> Hướng dẫn
+                    </h5>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                        <p><strong>Video URL:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li>YouTube: Copy link từ trình duyệt</li>
+                            <li>Vimeo: Copy link video</li>
+                            <li>File: Link trực tiếp đến .mp4</li>
+                        </ul>
+
+                        <p><strong>Thời lượng:</strong></p>
+                        <ul style="margin-left: 1.5rem; margin-bottom: 1rem;">
+                            <li>Nhập số phút của video</li>
+                            <li>VD: Video 1h30p = 90 phút</li>
+                        </ul>
+
+                        <p><strong>Tài liệu:</strong></p>
+                        <ul style="margin-left: 1.5rem;">
+                            <li>PDF, slides, code samples</li>
+                            <li>Upload lên Google Drive/Dropbox</li>
+                            <li>Copy link chia sẻ</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Info -->
+            @if (course != null)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 style="margin-bottom: 1rem;">
+                            <i class="fas fa-book"></i> Thông tin khóa học
+                        </h5>
+                        <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                            <p style="margin-bottom: 0.5rem;">
+                                <strong>Tên:</strong> @course.Title
+                            </p>
+                            <p style="margin-bottom: 0.5rem;">
+                                <strong>Giảng viên:</strong> @course.InstructorName
+                            </p>
+                            <p style="margin-bottom: 0;">
+                                <strong>Bài học hiện có:</strong> @(course.Lessons?.Count ?? 0)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

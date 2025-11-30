@@ -1,0 +1,95 @@
+@model IEnumerable<nguyenvanlap.Models.Review>
+
+@{
+    ViewData["Title"] = "Quản lý Đánh giá";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Quản lý Đánh giá</h1>
+            <p class="text-muted mb-0">Tổng số: <strong>@Model.Count()</strong> đánh giá</p>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Học viên</th>
+                            <th>Khóa học</th>
+                            <th>Đánh giá</th>
+                            <th>Nội dung</th>
+                            <th>Ngày tạo</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>#@item.Id</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2">
+                                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                                                <i class="fas fa-user text-secondary"></i>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold">@item.User?.FullName</div>
+                                            <div class="small text-muted">@item.User?.Email</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-medium text-primary">@item.Course?.Title</div>
+                                </td>
+                                <td>
+                                    <div class="text-warning">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= item.Rating)
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="text-truncate d-inline-block" style="max-width: 300px;" title="@item.Comment">
+                                        @item.Comment
+                                    </span>
+                                </td>
+                                <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td class="text-center">
+                                    <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc chắn muốn xóa đánh giá này?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="far fa-comment-dots fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Chưa có đánh giá nào.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,177 @@
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Lịch sử giao dịch";
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 style="font-weight: 800; background: linear-gradient(to right, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem;">
+                <i class="fas fa-history" style="color: #818cf8;"></i> Lịch Sử Giao Dịch
+            </h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem;">Theo dõi trạng thái và lịch sử mua khóa học của bạn</p>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card h-100 border-0" style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="card-body text-center p-4">
+                        <div style="width: 60px; height: 60px; background: rgba(99, 102, 241, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-shopping-bag" style="font-size: 1.5rem; color: #818cf8;"></i>
+                        </div>
+                        <h3 style="color: #fff; font-weight: 700; margin-bottom: 0.5rem;">@Model.Count()</h3>
+                        <p style="color: var(--text-muted); margin: 0; font-weight: 500;">Tổng đơn hàng</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(20, 184, 166, 0.1) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="card-body text-center p-4">
+                        <div style="width: 60px; height: 60px; background: rgba(34, 197, 94, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-check-circle" style="font-size: 1.5rem; color: #4ade80;"></i>
+                        </div>
+                        <h3 style="color: #fff; font-weight: 700; margin-bottom: 0.5rem;">
+                            @Model.Count(o => o.PaymentStatus == PaymentStatus.Completed)
+                        </h3>
+                        <p style="color: var(--text-muted); margin: 0; font-weight: 500;">Giao dịch thành công</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1);">
+                    <div class="card-body text-center p-4">
+                        <div style="width: 60px; height: 60px; background: rgba(249, 115, 22, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                            <i class="fas fa-wallet" style="font-size: 1.5rem; color: #fb923c;"></i>
+                        </div>
+                        <h3 style="color: #fff; font-weight: 700; margin-bottom: 0.5rem;">
+                            @Model.Where(o => o.PaymentStatus == PaymentStatus.Completed).Sum(o => o.Amount).ToString("N0") đ
+                        </h3>
+                        <p style="color: var(--text-muted); margin: 0; font-weight: 500;">Tổng chi tiêu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction Table -->
+        <div class="card border-0 shadow-lg" style="background: var(--bg-color); border-radius: 1rem; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0 align-middle" style="color: #e5e7eb; background-color: transparent !important;">
+                    <thead style="background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.1);">
+                        <tr>
+                            <th style="padding: 1.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Mã đơn hàng</th>
+                            <th style="padding: 1.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Khóa học</th>
+                            <th style="padding: 1.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Ngày mua</th>
+                            <th style="padding: 1.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Số tiền</th>
+                            <th style="padding: 1.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px;">Trạng thái</th>
+                            <th style="padding: 1.5rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.5px; text-align: right;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05); transition: all 0.2s;">
+                                <td style="padding: 1.5rem;">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span style="background: rgba(255,255,255,0.1); color: #fff; padding: 0.35rem 0.75rem; border-radius: 6px; font-family: monospace; font-weight: 600;">
+                                            #@order.Id.ToString("D6")
+                                        </span>
+                                    </div>
+                                </td>
+                                <td style="padding: 1.5rem;">
+                                    <div class="d-flex flex-column">
+                                        <span style="font-weight: 600; color: #fff; font-size: 1rem; margin-bottom: 0.25rem;">@order.Course.Title</span>
+                                        <span style="font-size: 0.85rem; color: var(--text-muted);">
+                                            <i class="fas fa-tag me-1"></i> @order.Course.Category?.Name
+                                        </span>
+                                    </div>
+                                </td>
+                                <td style="padding: 1.5rem;">
+                                    <div style="color: var(--text-secondary);">
+                                        <i class="far fa-calendar-alt me-2"></i>@order.CreatedAt.ToString("dd/MM/yyyy")
+                                        <br />
+                                        <small style="color: var(--text-muted); margin-left: 1.4rem;">@order.CreatedAt.ToString("HH:mm")</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1.5rem;">
+                                    <span style="font-weight: 700; color: #818cf8; font-size: 1.1rem;">
+                                        @order.Amount.ToString("N0") đ
+                                    </span>
+                                    <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                        @order.PaymentMethod
+                                    </div>
+                                </td>
+                                <td style="padding: 1.5rem;">
+                                    @switch (order.PaymentStatus)
+                                    {
+                                        case PaymentStatus.Pending:
+                                            <span class="badge rounded-pill" style="background: rgba(251, 146, 60, 0.2); color: #fb923c; padding: 0.5rem 1rem; font-weight: 600;">
+                                                <i class="fas fa-clock me-1"></i> Đang xử lý
+                                            </span>
+                                            break;
+                                        case PaymentStatus.Completed:
+                                            <span class="badge rounded-pill" style="background: rgba(74, 222, 128, 0.2); color: #4ade80; padding: 0.5rem 1rem; font-weight: 600;">
+                                                <i class="fas fa-check-circle me-1"></i> Hoàn thành
+                                            </span>
+                                            break;
+                                        case PaymentStatus.Failed:
+                                            <span class="badge rounded-pill" style="background: rgba(248, 113, 113, 0.2); color: #f87171; padding: 0.5rem 1rem; font-weight: 600;">
+                                                <i class="fas fa-times-circle me-1"></i> Thất bại
+                                            </span>
+                                            break;
+                                        case PaymentStatus.Refunded:
+                                            <span class="badge rounded-pill" style="background: rgba(148, 163, 184, 0.2); color: #94a3b8; padding: 0.5rem 1rem; font-weight: 600;">
+                                                <i class="fas fa-undo me-1"></i> Hoàn tiền
+                                            </span>
+                                            break;
+                                    }
+                                </td>
+                                <td style="padding: 1.5rem; text-align: right;">
+                                    @if (order.PaymentStatus == PaymentStatus.Completed)
+                                    {
+                                        <a asp-controller="Courses" asp-action="Learn" asp-route-id="@order.CourseId" 
+                                           class="btn btn-primary btn-sm" 
+                                           style="padding: 0.5rem 1.25rem; font-weight: 600; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);">
+                                            <i class="fas fa-play me-1"></i> Vào học
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary btn-sm" disabled style="opacity: 0.5; padding: 0.5rem 1.25rem; border-radius: 8px;">
+                                            <i class="fas fa-lock me-1"></i> Chưa mở
+                                        </button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="text-center" style="padding: 5rem 0;">
+            <div style="width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem;">
+                <i class="fas fa-receipt" style="font-size: 3rem; color: var(--text-muted);"></i>
+            </div>
+            <h3 style="color: #fff; margin-bottom: 1rem;">Chưa có giao dịch nào</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">
+                Bạn chưa mua khóa học nào. Hãy khám phá các khóa học chất lượng của chúng tôi ngay hôm nay!
+            </p>
+            <a asp-controller="Courses" asp-action="Index" class="btn btn-primary btn-lg" style="padding: 0.75rem 2rem; border-radius: 50px; font-weight: 600;">
+                <i class="fas fa-compass me-2"></i> Khám phá khóa học
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.03) !important;
+    }
+</style>

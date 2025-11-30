@@ -1,0 +1,107 @@
+@model IEnumerable<Course>
+
+@{
+    ViewData["Title"] = "Danh sách khóa học";
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <h1 style="margin-bottom: 2rem;">
+        <i class="fas fa-book"></i> Danh Sách Khóa Học
+    </h1>
+
+    <!-- Search and Filter -->
+    <div class="card" style="margin-bottom: 2rem; padding: 2rem;">
+        <form method="get" asp-action="Index">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Tìm kiếm</label>
+                        <input type="text" name="search" class="form-control" placeholder="Tìm theo tên khóa học, giảng viên..." value="@ViewBag.Search" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">Danh mục</label>
+                        <select name="categoryId" class="form-select">
+                            <option value="">Tất cả danh mục</option>
+                            @foreach (var category in ViewBag.Categories as List<Category>)
+                            {
+                                <option value="@category.Id" selected="@(ViewBag.CategoryId == category.Id)">@category.Name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="mb-3">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fas fa-search"></i> Tìm
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Results Count -->
+    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+        Tìm thấy <strong>@Model.Count()</strong> khóa học
+    </p>
+
+    <!-- Courses Grid -->
+    @if (Model.Any())
+    {
+        <div class="course-grid">
+            @foreach (var course in Model)
+            {
+                <div class="card fade-in">
+                    <img src="@(course.CoverImage ?? "/images/default-course.jpg")" alt="@course.Title" class="card-img-top" 
+                         onerror="this.src='/images/default-course.jpg'">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem;">
+                            <span class="badge badge-primary">@course.Category.Name</span>
+                            <div class="rating">
+                                @{
+                                    var avgRating = course.Reviews.Any() ? course.Reviews.Average(r => r.Rating) : 0;
+                                    for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="fas fa-star" style="color: @(i <= avgRating ? "var(--accent-color)" : "#334155");"></i>
+                                    }
+                                }
+                                <span style="margin-left: 0.5rem; color: var(--text-muted);">(@course.Reviews.Count)</span>
+                            </div>
+                        </div>
+                        <h3 class="card-title">@course.Title</h3>
+                        <p class="card-text">@(course.Description.Length > 100 ? course.Description.Substring(0, 100) + "..." : course.Description)</p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                            <div>
+                                <p style="margin: 0; color: var(--text-muted); font-size: 0.875rem;">
+                                    <i class="fas fa-user"></i> @course.InstructorName
+                                </p>
+                                <p style="margin: 0; color: var(--text-muted); font-size: 0.875rem;">
+                                    <i class="fas fa-book-open"></i> @course.Lessons.Count bài học
+                                </p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--primary-light);">
+                                    @course.Price.ToString("N0") đ
+                                </p>
+                            </div>
+                        </div>
+                        <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            <i class="fas fa-info-circle"></i> Xem chi tiết
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" style="text-align: center; padding: 3rem;">
+            <i class="fas fa-info-circle" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h4>Không tìm thấy khóa học nào</h4>
+            <p>Vui lòng thử tìm kiếm với từ khóa khác hoặc chọn danh mục khác.</p>
+        </div>
+    }
+</div>

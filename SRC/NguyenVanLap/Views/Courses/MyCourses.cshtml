@@ -1,0 +1,62 @@
+@model IEnumerable<MyCourseViewModel>
+
+@{
+    ViewData["Title"] = "Khóa học của tôi";
+}
+
+<div class="container" style="padding: 3rem 0;">
+    <h1 style="margin-bottom: 2rem;">
+        <i class="fas fa-graduation-cap"></i> Khóa Học Của Tôi
+    </h1>
+
+    @if (Model.Any())
+    {
+        <div class="course-grid">
+            @foreach (var item in Model)
+            {
+                <div class="card fade-in">
+                    <img src="@(item.Course.CoverImage ?? "/images/default-course.jpg")" alt="@item.Course.Title" class="card-img-top" 
+                         onerror="this.src='/images/default-course.jpg'">
+                    <div class="card-body">
+                        <span class="badge badge-primary">@item.Course.Category.Name</span>
+                        <h3 class="card-title">@item.Course.Title</h3>
+                        
+                        <!-- Progress Bar -->
+                        <div style="margin: 1rem 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span style="font-size: 0.875rem; color: var(--text-secondary);">Tiến độ học tập</span>
+                                <span style="font-size: 0.875rem; font-weight: 600; color: var(--primary-light);">@item.ProgressPercentage%</span>
+                            </div>
+                            <div style="width: 100%; height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden;">
+                                <div style="width: @(item.ProgressPercentage)%; height: 100%; background: var(--gradient-primary); transition: width 0.3s ease;"></div>
+                            </div>
+                            <p style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                                @item.CompletedLessons/@item.TotalLessons bài học đã hoàn thành
+                            </p>
+                        </div>
+
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <a asp-action="Learn" asp-route-id="@item.Course.Id" class="btn btn-primary" style="flex: 1;">
+                                <i class="fas fa-play"></i> @(item.ProgressPercentage > 0 ? "Tiếp tục học" : "Bắt đầu học")
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.Course.Id" class="btn btn-outline-primary">
+                                <i class="fas fa-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" style="text-align: center; padding: 3rem;">
+            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+            <h4>Bạn chưa có khóa học nào</h4>
+            <p>Khám phá và đăng ký các khóa học để bắt đầu học ngay!</p>
+            <a asp-action="Index" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-search"></i> Khám phá khóa học
+            </a>
+        </div>
+    }
+</div>

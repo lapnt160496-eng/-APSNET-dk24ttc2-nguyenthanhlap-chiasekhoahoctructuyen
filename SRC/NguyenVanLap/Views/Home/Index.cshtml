@@ -1,0 +1,180 @@
+﻿@model IEnumerable<nguyenvanlap.Models.Course>
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-content fade-in">
+            <span class="badge badge-primary mb-3" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                <i class="fas fa-star me-2"></i> Nền tảng học tập số 1 Việt Nam
+            </span>
+            <h1>Mở Ra Cánh Cửa <br><span class="text-gradient">Tri Thức Tương Lai</span></h1>
+            <p>Truy cập không giới hạn hàng trăm khóa học chất lượng cao từ các chuyên gia hàng đầu. Nâng cao kỹ năng, phát triển sự nghiệp của bạn ngay hôm nay.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2.5rem;">
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-primary btn-lg">
+                    <i class="fas fa-rocket"></i> Khám phá ngay
+                </a>
+                @if (!User.Identity!.IsAuthenticated)
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-secondary btn-lg">
+                        <i class="fas fa-user-plus"></i> Đăng ký miễn phí
+                    </a>
+                }
+            </div>
+            
+            <div style="margin-top: 4rem; display: flex; justify-content: center; gap: 3rem; color: var(--text-muted);">
+                <div style="text-align: center;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 0;">10k+</h3>
+                    <small>Học viên</small>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 0;">500+</h3>
+                    <small>Khóa học</small>
+                </div>
+                <div style="text-align: center;">
+                    <h3 style="color: var(--text-primary); margin-bottom: 0;">4.8/5</h3>
+                    <small>Đánh giá</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section style="padding: 4rem 0;">
+    <div class="container">
+        <h2 class="section-title">Danh Mục Phổ Biến</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+            @foreach (var category in ViewBag.Categories as List<Category>)
+            {
+                <a asp-controller="Courses" asp-action="Index" asp-route-categoryId="@category.Id" 
+                   class="card glass-effect" style="text-decoration: none; text-align: center; padding: 2.5rem; border: 1px solid var(--border-color);">
+                    <div style="width: 60px; height: 60px; background: rgba(99, 102, 241, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                        <i class="fas fa-@GetCategoryIcon(category.Name)" style="font-size: 1.5rem; color: var(--primary-light);"></i>
+                    </div>
+                    <h4 style="margin-bottom: 0.5rem; font-size: 1.1rem;">@category.Name</h4>
+                    <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">@category.Courses.Count khóa học</p>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses Section -->
+<section style="padding: 4rem 0; background: var(--bg-secondary);">
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: end; margin-bottom: 3rem;">
+            <div>
+                <h2 style="margin-bottom: 0.5rem;">Khóa Học Nổi Bật</h2>
+                <p style="margin: 0;">Những khóa học được yêu thích nhất tuần qua</p>
+            </div>
+            <a asp-controller="Courses" asp-action="Index" class="btn btn-outline-primary">
+                Xem tất cả <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+        
+        <div class="course-grid">
+            @foreach (var course in Model)
+            {
+                <div class="card fade-in">
+                    <div style="position: relative;">
+                        <img src="@(course.CoverImage ?? "/images/default-course.jpg")" alt="@course.Title" class="card-img-top" 
+                             onerror="this.src='/images/default-course.jpg'">
+                        <span class="badge badge-primary" style="position: absolute; top: 1rem; left: 1rem; backdrop-filter: blur(4px);">
+                            @course.Category.Name
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <div class="rating" style="font-size: 0.875rem;">
+                                <i class="fas fa-star text-warning"></i>
+                                <span style="font-weight: 600; color: var(--text-primary); margin-left: 0.25rem;">
+                                    @(course.Reviews.Any() ? course.Reviews.Average(r => r.Rating).ToString("0.0") : "5.0")
+                                </span>
+                                <span style="color: var(--text-muted);">(@(course.Reviews.Count > 0 ? course.Reviews.Count : 12) đánh giá)</span>
+                            </div>
+                        </div>
+                        
+                        <h3 class="card-title">
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id" style="color: inherit;">
+                                @course.Title
+                            </a>
+                        </h3>
+                        
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                            <div style="width: 30px; height: 30px; background: var(--bg-tertiary); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user" style="font-size: 0.75rem; color: var(--text-secondary);"></i>
+                            </div>
+                            <span style="font-size: 0.9rem; color: var(--text-secondary);">@course.InstructorName</span>
+                        </div>
+                        
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="font-size: 1.25rem; font-weight: 700; color: var(--primary-light);">
+                                    @course.Price.ToString("N0") đ
+                                </span>
+                            </div>
+                            <a asp-controller="Courses" asp-action="Details" asp-route-id="@course.Id" class="btn btn-secondary btn-sm">
+                                Chi tiết
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section style="padding: 6rem 0;">
+    <div class="container">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto 4rem;">
+            <h2 style="margin-bottom: 1rem;">Tại Sao Chọn Chúng Tôi?</h2>
+            <p>Chúng tôi cam kết mang đến trải nghiệm học tập tốt nhất với công nghệ hiện đại và nội dung chất lượng.</p>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+            <div class="card glass-effect" style="padding: 2rem; border: none; background: rgba(255,255,255,0.02);">
+                <div style="width: 50px; height: 50px; background: var(--gradient-primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i class="fas fa-video text-white" style="font-size: 1.25rem;"></i>
+                </div>
+                <h4>Chất lượng HD</h4>
+                <p>Video bài giảng sắc nét, âm thanh sống động giúp bạn tiếp thu kiến thức tốt nhất.</p>
+            </div>
+            
+            <div class="card glass-effect" style="padding: 2rem; border: none; background: rgba(255,255,255,0.02);">
+                <div style="width: 50px; height: 50px; background: var(--gradient-secondary); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i class="fas fa-certificate text-white" style="font-size: 1.25rem;"></i>
+                </div>
+                <h4>Chứng chỉ uy tín</h4>
+                <p>Nhận chứng chỉ hoàn thành khóa học để bổ sung vào hồ sơ năng lực của bạn.</p>
+            </div>
+            
+            <div class="card glass-effect" style="padding: 2rem; border: none; background: rgba(255,255,255,0.02);">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                    <i class="fas fa-infinity text-white" style="font-size: 1.25rem;"></i>
+                </div>
+                <h4>Truy cập trọn đời</h4>
+                <p>Mua một lần, học mãi mãi. Bạn có thể xem lại bài giảng bất cứ lúc nào.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@functions {
+    string GetCategoryIcon(string categoryName)
+    {
+        return categoryName switch
+        {
+            "Lập trình" => "code",
+            "Marketing" => "bullhorn",
+            "Thiết kế" => "palette",
+            "Kinh doanh" => "briefcase",
+            "Ngoại ngữ" => "language",
+            _ => "graduation-cap"
+        };
+    }
+}

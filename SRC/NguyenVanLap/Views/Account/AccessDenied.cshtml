@@ -1,0 +1,91 @@
+@{
+    ViewData["Title"] = "Truy cập bị từ chối";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="padding: 5rem 0; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto;">
+        <div style="font-size: 6rem; margin-bottom: 2rem;">
+            <i class="fas fa-ban" style="color: var(--error-color);"></i>
+        </div>
+        
+        <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--error-color);">
+            403
+        </h1>
+        
+        <h2 style="margin-bottom: 1.5rem;">
+            Truy Cập Bị Từ Chối
+        </h2>
+        
+        <p style="font-size: 1.125rem; color: var(--text-secondary); margin-bottom: 2rem;">
+            Bạn không có quyền truy cập vào trang này. Vui lòng liên hệ quản trị viên nếu bạn cho rằng đây là lỗi.
+        </p>
+        
+        <div class="alert alert-warning" style="text-align: left; margin-bottom: 2rem;">
+            <i class="fas fa-info-circle"></i>
+            <strong>Lưu ý:</strong> Trang này yêu cầu quyền truy cập đặc biệt. 
+            Nếu bạn cần truy cập, vui lòng đăng nhập với tài khoản có quyền phù hợp.
+        </div>
+        
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                Về Trang Chủ
+            </a>
+            
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <a asp-controller="Courses" asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-book"></i>
+                    Khám Phá Khóa Học
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-secondary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Đăng Nhập
+                </a>
+            }
+        </div>
+        
+        <div style="margin-top: 3rem; padding: 2rem; background: var(--bg-secondary); border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+            <h5 style="margin-bottom: 1rem; color: var(--text-primary);">
+                <i class="fas fa-question-circle"></i>
+                Cần Trợ Giúp?
+            </h5>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                Nếu bạn cho rằng bạn nên có quyền truy cập vào trang này:
+            </p>
+            <ul style="list-style: none; padding: 0; color: var(--text-secondary);">
+                <li style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-check" style="color: var(--success-color);"></i>
+                    Kiểm tra xem bạn đã đăng nhập đúng tài khoản chưa
+                </li>
+                <li style="margin-bottom: 0.5rem;">
+                    <i class="fas fa-check" style="color: var(--success-color);"></i>
+                    Liên hệ quản trị viên để được cấp quyền
+                </li>
+                <li>
+                    <i class="fas fa-check" style="color: var(--success-color);"></i>
+                    Đăng xuất và đăng nhập lại với tài khoản khác
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-icon-pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+</style>

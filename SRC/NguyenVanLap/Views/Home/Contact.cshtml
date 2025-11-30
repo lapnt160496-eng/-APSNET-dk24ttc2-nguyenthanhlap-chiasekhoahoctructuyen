@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<div class="contact-page-wrapper" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 2rem;">
+    <div class="card border-0 shadow-lg hover-scale" style="max-width: 500px; width: 100%; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; transition: transform 0.3s ease;">
+        <div class="card-header text-center border-0 pt-5 pb-0" style="background: transparent;">
+            <div class="avatar-circle mb-3 mx-auto" style="width: 100px; height: 100px; background: linear-gradient(45deg, #4f46e5, #ec4899); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <h2 class="fw-bold mb-1" style="color: #1f2937;">Nguyễn Thành Lập</h2>
+            <p class="text-muted">Sinh viên thực hiện</p>
+        </div>
+        
+        <div class="card-body p-4 px-5">
+            <div class="info-item d-flex align-items-center mb-4 p-3" style="background: #f3f4f6; border-radius: 15px; transition: all 0.3s;">
+                <div class="icon-box me-3" style="width: 45px; height: 45px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #4f46e5; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">Mã sinh viên</small>
+                    <span class="fw-bold fs-5" style="color: #374151;">170124161</span>
+                </div>
+            </div>
+
+            <div class="info-item d-flex align-items-center mb-4 p-3" style="background: #f3f4f6; border-radius: 15px; transition: all 0.3s;">
+                <div class="icon-box me-3" style="width: 45px; height: 45px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #ec4899; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <small class="text-muted d-block text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1px;">Lớp</small>
+                    <span class="fw-bold fs-5" style="color: #374151;">DK24TTC2</span>
+                </div>
+            </div>
+            
+            <div class="text-center mt-5">
+                 <a asp-controller="Home" asp-action="Index" class="btn btn-primary px-5 py-2 fw-bold" style="border-radius: 50px; background: linear-gradient(45deg, #4f46e5, #6366f1); border: none; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.4);">
+                    <i class="fas fa-arrow-left me-2"></i> Về Trang Chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-scale:hover {
+        transform: translateY(-5px);
+    }
+    .info-item:hover {
+        background: white !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+</style>

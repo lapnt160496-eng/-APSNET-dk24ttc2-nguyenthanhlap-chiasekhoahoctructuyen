@@ -1,0 +1,165 @@
+@model LessonPlayerViewModel
+
+@{
+    ViewData["Title"] = Model.Course.Title;
+}
+
+<div style="display: flex; height: calc(100vh - 60px); background: var(--bg-color);">
+    <!-- Video Player Area -->
+    <div style="flex: 1; display: flex; flex-direction: column;">
+        <!-- Video Container -->
+        <div style="background: #000; position: relative; aspect-ratio: 16/9;">
+            @if (!string.IsNullOrEmpty(Model.CurrentLesson.VideoUrl))
+            {
+                @if (Model.CurrentLesson.VideoUrl.Contains("youtube.com") || Model.CurrentLesson.VideoUrl.Contains("youtu.be"))
+                {
+                    var videoId = Model.CurrentLesson.VideoUrl.Contains("youtube.com") 
+                        ? Model.CurrentLesson.VideoUrl.Split("v=")[1].Split("&")[0]
+                        : Model.CurrentLesson.VideoUrl.Split("/").Last();
+                    <iframe width="100%" height="100%" 
+                            src="https://www.youtube.com/embed/@videoId" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                }
+                else if (Model.CurrentLesson.VideoUrl.Contains("vimeo.com"))
+                {
+                    var videoId = Model.CurrentLesson.VideoUrl.Split("/").Last();
+                    <iframe src="https://player.vimeo.com/video/@videoId" 
+                            width="100%" height="100%" 
+                            frameborder="0" 
+                            allow="autoplay; fullscreen; picture-in-picture" 
+                            allowfullscreen>
+                    </iframe>
+                }
+                else
+                {
+                    <video width="100%" height="100%" controls>
+                        <source src="@Model.CurrentLesson.VideoUrl" type="video/mp4">
+                        Trình duyệt của bạn không hỗ trợ video.
+                    </video>
+                }
+            }
+            else
+            {
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #fff;">
+                    <div style="text-align: center;">
+                        <i class="fas fa-video-slash" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <p>Video chưa có sẵn</p>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Lesson Info -->
+        <div style="padding: 2rem; flex: 1; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                <div style="flex: 1;">
+                    <h2 style="margin-bottom: 0.5rem;">@Model.CurrentLesson.Title</h2>
+                    <p style="color: var(--text-muted);">
+                        <i class="fas fa-clock"></i> @Model.CurrentLesson.DurationMinutes phút
+                    </p>
+                </div>
+                <form asp-action="MarkLessonComplete" method="post" style="display: inline;">
+                    <input type="hidden" name="lessonId" value="@Model.CurrentLesson.Id" />
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Đánh dấu hoàn thành
+                    </button>
+                </form>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.CurrentLesson.Description))
+            {
+                <div style="margin-bottom: 2rem;">
+                    <h4>Mô tả bài học</h4>
+                    <p style="color: var(--text-secondary);">@Model.CurrentLesson.Description</p>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.CurrentLesson.DocumentUrl))
+            {
+                <div>
+                    <h4>Tài liệu đính kèm</h4>
+                    <a href="@Model.CurrentLesson.DocumentUrl" target="_blank" class="btn btn-outline-primary">
+                        <i class="fas fa-download"></i> Tải tài liệu
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Lessons Sidebar -->
+    <div style="width: 400px; background: var(--bg-secondary); border-left: 1px solid var(--border-color); display: flex; flex-direction: column;">
+        <!-- Course Header -->
+        <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">
+            <h3 style="margin-bottom: 0.5rem;">@Model.Course.Title</h3>
+            @if (Model.Progress != null)
+            {
+                <div style="margin-top: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.875rem;">Tiến độ</span>
+                        <span style="font-size: 0.875rem; font-weight: 600;">
+                            @Model.Progress.CompletedLessons/@Model.Progress.TotalLessons bài
+                        </span>
+                    </div>
+                    <div style="width: 100%; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden;">
+                        @{
+                            var progress = Model.Progress.TotalLessons > 0 
+                                ? (Model.Progress.CompletedLessons * 100 / Model.Progress.TotalLessons) 
+                                : 0;
+                        }
+                        <div style="width: @(progress)%; height: 100%; background: var(--gradient-primary);"></div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Lessons List -->
+        <div style="flex: 1; overflow-y: auto;">
+            @foreach (var lesson in Model.AllLessons)
+            {
+                var isActive = lesson.Id == Model.CurrentLesson.Id;
+                var isCompleted = Model.Progress?.CompletedLessons >= lesson.OrderIndex;
+                
+                <a asp-action="Learn" asp-route-id="@Model.Course.Id" asp-route-lessonId="@lesson.Id"
+                   style="display: block; padding: 1rem 1.5rem; text-decoration: none; border-bottom: 1px solid var(--border-color); 
+                          background: @(isActive ? "var(--bg-tertiary)" : "transparent"); 
+                          border-left: 3px solid @(isActive ? "var(--primary-color)" : "transparent");">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                @if (isCompleted)
+                                {
+                                    <i class="fas fa-check-circle" style="color: var(--success-color);"></i>
+                                }
+                                else if (isActive)
+                                {
+                                    <i class="fas fa-play-circle" style="color: var(--primary-color);"></i>
+                                }
+                                else
+                                {
+                                    <i class="far fa-circle" style="color: var(--text-muted);"></i>
+                                }
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">Bài @lesson.OrderIndex</span>
+                            </div>
+                            <h5 style="margin: 0; font-size: 0.9rem; color: @(isActive ? "var(--primary-light)" : "var(--text-primary)");">
+                                @lesson.Title
+                            </h5>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); white-space: nowrap; margin-left: 0.5rem;">
+                            @lesson.DurationMinutes'
+                        </span>
+                    </div>
+                </a>
+            }
+        </div>
+
+        <!-- Back Button -->
+        <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-color);">
+            <a asp-action="MyCourses" class="btn btn-outline-primary" style="width: 100%;">
+                <i class="fas fa-arrow-left"></i> Quay lại khóa học của tôi
+            </a>
+        </div>
+    </div>
+</div>
